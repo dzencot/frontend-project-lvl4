@@ -19,9 +19,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git@github.com:hexlet-components/projects-frontend-l4-server.git"
+    "url": "git@github.com:dzencot/projects-frontend-l4.git"
   },
-  "author": "Kirill Mokevnin",
+  "author": "Ivan Gagarinov",
   "license": "ISC",
   "homepage": "",
   "dependencies": {
