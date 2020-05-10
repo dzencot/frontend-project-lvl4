@@ -1,23 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Channel from './components/Channel';
+import { configureStore } from '@reduxjs/toolkit';
+import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './utils';
+
+import AppContext from './AppContext';
+import Chat from './components/Chat';
 
 const app = (channels) => {
-  const container = document.getElementById('chat');
-  const html = (
-    <div className="row h-100 pb-3">
-      <div className="col-3 border-right">
-        <div className="d-flex mb-2">
-          <span>Channels</span>
-        </div>
-        <ul className="nav flex-column nav-pills nav-fill">
-          {channels.map(({ name, id }) => <Channel name={name} key={id} />)}
-        </ul>
-      </div>
-    </div>
-  );
+  let userName = getCurrentUserName();
+  if (!userName) {
+    userName = getRandomUserName();
+    saveCurrentUserName(userName);
+  }
 
-  ReactDOM.render(html, container);
+
+  const container = document.getElementById('chat');
+
+  // const store = configureStore({
+  //   reducer: rootReducer,
+  // });
+
+  ReactDOM.render(
+    <AppContext.Provider value={{ userName }}>
+      <Chat channels={channels} />
+    </AppContext.Provider>,
+    container,
+  );
 };
 
 export default app;
