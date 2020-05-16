@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { configureStore } from '@reduxjs/toolkit';
-import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './utils';
+import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './services';
 
 import AppContext from './AppContext';
 import Chat from './components/Chat';
