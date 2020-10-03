@@ -1,22 +1,38 @@
-import React, { useContext } from 'react';
-import Channel from './Channel';
-import AppContext from '../AppContext';
+/* eslint-disable react/prefer-stateless-function */
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { fetchMessages } from '../reducers.js';
 
-function Chat(props) {
-  const { userName } = useContext(AppContext);
-  const { channels } = props;
-  return (
-    <div className="row h-100 pb-3">
-      <div className="col-3 border-right">
-        <div className="d-flex mb-2">
-          <span>Channels</span>
+class Chat extends React.Component {
+  render() {
+    // const dispatch = useDispatch();
+    return (
+      <div className="col h-100">
+        <div className="d-flex flex-column h-100">
+          <div id="messages-box" className="chat-messages overflow-auto mb-3">
+            <div>
+              <b>Hollis_Kautzer</b>
+              : wd
+            </div>
+            <div>
+              <b>Malvina.Dickinson9</b>
+              : jkhkjh
+            </div>
+          </div>
+          <div className="mt-auto">
+            <form noValidate="" className="">
+              <div className="form-group">
+                <div className="input-group">
+                  <input name="body" className="form-control" value="" />
+                  <div className="d-block invalid-feedback">&nbsp;</div>
+                </div>
+              </div>
+            </form>
+          </div>
         </div>
-        <ul className="nav flex-column nav-pills nav-fill">
-          {channels.map(({ name, id }) => <Channel name={name} key={id} />)}
-        </ul>
       </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default Chat;
