@@ -1,12 +1,21 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { fetchMessages } from '../reducers.js';
+import routes from '../routes';
 
 class Chat extends React.Component {
   sendMessage = (values) => {
+    const url = routes.channelMessagesPath(1);
+    console.log('url:', url);
     console.log('sendMessage: ', values);
+    axios.post(url, {
+      data: values,
+    }).then((result) => {
+      console.log('result:', result);
+    });
   }
 
   render() {

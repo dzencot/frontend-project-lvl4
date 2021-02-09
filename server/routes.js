@@ -112,6 +112,7 @@ export default (app, io, defaultState = {}) => {
       reply.send(response);
     })
     .post('/api/v1/channels/:channelId/messages', (req, reply) => {
+      console.log(JSON.stringify(req.body, null, 2));
       const { data: { attributes } } = req.body;
       const message = {
         ...attributes,
