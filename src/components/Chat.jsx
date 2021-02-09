@@ -1,9 +1,14 @@
 /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
+import { Formik, Form, Field } from 'formik';
 import { useDispatch } from 'react-redux';
 import { fetchMessages } from '../reducers.js';
 
 class Chat extends React.Component {
+  sendMessage = (values) => {
+    console.log('sendMessage: ', values);
+  }
+
   render() {
     // const dispatch = useDispatch();
     return (
@@ -20,14 +25,23 @@ class Chat extends React.Component {
             </div>
           </div>
           <div className="mt-auto">
-            <form noValidate="" className="">
-              <div className="form-group">
+            <Formik
+              initialValues={{
+                message: '',
+              }}
+              onSubmit={(values) => this.sendMessage(values)}
+            >
+              <Form>
                 <div className="input-group">
-                  <input name="body" className="form-control" value="" />
-                  <div className="d-block invalid-feedback">&nbsp;</div>
+                  <Field name="message">
+                    {({ field }) => (
+                      <input type="text" className="mr-2 form-control" {...field} />
+                    )}
+                  </Field>
+                  <button type="submit" className="btn btn-primary">Submit</button>
                 </div>
-              </div>
-            </form>
+              </Form>
+            </Formik>
           </div>
         </div>
       </div>
