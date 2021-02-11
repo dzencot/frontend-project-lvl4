@@ -5,7 +5,7 @@ import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './se
 
 import AppContext from './AppContext';
 import App from './components/App';
-import rootReducer from './reducers';
+import reducer from './reducers';
 
 const app = (channels) => {
   let userName = getCurrentUserName();
@@ -18,12 +18,13 @@ const app = (channels) => {
   const container = document.getElementById('chat');
 
   const store = configureStore({
-    reducer: rootReducer,
+    reducer,
   });
+  console.log('store:', store);
 
   ReactDOM.render(
-    <AppContext.Provider value={{ userName }} store={store}>
-      <App channels={channels} />
+    <AppContext.Provider value={{ userName }}>
+      <App channels={channels} store={store} />
     </AppContext.Provider>,
     container,
   );
