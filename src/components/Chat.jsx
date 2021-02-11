@@ -22,8 +22,8 @@ class Chat extends React.Component {
     // const { messages } = store.getState();
     // const messages = useSelector((state) => state.messages);
 
-    return messages.map((message) => (
-      <div>
+    return messages.map((message, index) => (
+      <div key={{ index }}>
         <b>{message.author}</b>: {message.text}
       </div>
     ));

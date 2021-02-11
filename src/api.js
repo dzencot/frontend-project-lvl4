@@ -3,14 +3,14 @@ import axios from 'axios';
 import * as actions from './reducers';
 import routes from './routes';
 
-export const sendMessage = (channelId, text) => async (dispatch) => {
+export const sendMessage = (channelId, message) => async (dispatch) => {
   dispatch(actions.createMessageStart());
   const url = routes.channelMessagesPath(channelId);
   console.log('Current url: ', url);
   try {
-    const response = await axios.post(url, { data: text });
+    const response = await axios.post(url, { data: message.message });
     console.log('response: ', response);
-    const newMessage = { author: 'test1', text };
+    const newMessage = { author: 'test1', text: message.message };
     dispatch(actions.createMessageSuccess(newMessage));
   } catch (error) {
     error.clientMessage = `Can't send message in channel id ${channelId}`;
