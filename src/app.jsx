@@ -1,11 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import io from 'socket.io-client';
 import { configureStore } from '@reduxjs/toolkit';
 import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './services';
 
 import AppContext from './AppContext';
 import App from './components/App';
-import reducer from './reducers';
+import reducer, { createMessageSuccess } from './reducers';
+import { selectChannel } from './api';
 
 const app = (channels) => {
   let userName = getCurrentUserName();
@@ -19,23 +21,20 @@ const app = (channels) => {
   const store = configureStore({
     reducer,
   });
-  console.log('store:', store);
 
-  const { hostname } = window.location;
-  const websocket = new WebSocket(`ws://${hostname}:8080`, 'newMessage');
-  websocket.onopen = () => {
-    console.log('websocket opened');
-  };
-  websocket.onmessage = (event) => {
-    console.log('websocket event:', event);
-  };
+  const websocket = io();
+  websocket.on('newMessage', ({ data: { attributes: message } }) => {
+    store.dispatch(createMessageSuccess(message));
+  });
 
   ReactDOM.render(
     <AppContext.Provider value={{ userName }}>
-      <App channels={channels} store={store} websocket={websocket} />
+      <App channels={channels} store={store} />
     </AppContext.Provider>,
     container,
   );
+
+  selectChannel(1)(store.dispatch);
 };
 
 export default app;

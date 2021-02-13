@@ -12,7 +12,7 @@ const getMessageFromResponse = ({ attributes }) => ({
   id: attributes.id,
 });
 
-export const sendMessage = (channelId, authorName, message, websocket = null) => async (dispatch) => {
+export const sendMessage = (channelId, authorName, message) => async (dispatch) => {
   dispatch(actions.createMessageStart());
   const url = routes.channelMessagesPath(channelId);
   console.log('Current url: ', url);
@@ -29,9 +29,6 @@ export const sendMessage = (channelId, authorName, message, websocket = null) =>
     console.log('response: ', response);
     const newMessage = getMessageFromResponse(_.get(response, 'data.data'));
     dispatch(actions.createMessageSuccess(newMessage));
-    if (websocket) {
-      websocket.send(JSON.stringify(newMessage));
-    }
   } catch (error) {
     error.clientMessage = `Can't send message in channel id ${channelId}`;
     dispatch(actions.createMessageError({ error }));

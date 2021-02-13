@@ -13,9 +13,9 @@ const mapStateToProps = (state) => {
 };
 
 class Chat extends React.Component {
-  createMessage = (userName, values, store, websocket) => {
+  createMessage = (userName, values, store) => {
     const { selectedChannelId } = store.getState();
-    sendMessage(selectedChannelId, userName, values, websocket)(store.dispatch);
+    sendMessage(selectedChannelId, userName, values)(store.dispatch);
   };
 
   renderMessages = (messages) => {
@@ -33,7 +33,7 @@ class Chat extends React.Component {
 
 
   render() {
-    const { messages, store, createMessageState, userName, websocket } = this.props;
+    const { messages, store, createMessageState, userName } = this.props;
     return (
       <div className="col h-100">
         <div className="d-flex flex-column h-100">
@@ -45,7 +45,7 @@ class Chat extends React.Component {
               initialValues={{
                 message: '',
               }}
-              onSubmit={(values) => this.createMessage(userName, values, store, websocket)}
+              onSubmit={(values) => this.createMessage(userName, values, store)}
             >
               <Form>
                 <div className="input-group">
