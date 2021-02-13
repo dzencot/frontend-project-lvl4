@@ -17,7 +17,7 @@ const appSlice = createSlice({
   initialState,
   reducers: {
     createMessageStart: (state) => {
-      state.createMessageStart = 'requesting';
+      state.createMessageState = 'requesting';
     },
     createMessageSuccess: (state, action) => {
       state.messages.push(action.payload);

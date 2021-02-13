@@ -31,14 +31,7 @@ class Chat extends React.Component {
 
 
   render() {
-    const { messages, store } = this.props;
-    // const { messages } = store.getState();
-    // const messages = useSelector((state) => state.messages);
-    // const messages = [
-    //   { author: 'test1', text: 'my text 1' },
-    //   { author: 'test2', text: 'my text 2' },
-    // ];
-    // const dispatch = useDispatch();
+    const { messages, store, createMessageState } = this.props;
     return (
       <div className="col h-100">
         <div className="d-flex flex-column h-100">
@@ -56,10 +49,10 @@ class Chat extends React.Component {
                 <div className="input-group">
                   <Field name="message">
                     {({ field }) => (
-                      <input type="text" className="mr-2 form-control" {...field} />
+                      <input type="text" disabled={createMessageState === 'requesting'} className="mr-2 form-control" {...field} />
                     )}
                   </Field>
-                  <button type="submit" className="btn btn-primary">Submit</button>
+                  <button type="submit" disabled={createMessageState === 'requesting'} className="btn btn-primary">Submit</button>
                 </div>
               </Form>
             </Formik>
