@@ -14,7 +14,6 @@ const app = (channels) => {
     saveCurrentUserName(userName);
   }
 
-
   const container = document.getElementById('chat');
 
   const store = configureStore({
@@ -22,9 +21,18 @@ const app = (channels) => {
   });
   console.log('store:', store);
 
+  const { hostname } = window.location;
+  const websocket = new WebSocket(`ws://${hostname}:8080`, 'newMessage');
+  websocket.onopen = () => {
+    console.log('websocket opened');
+  };
+  websocket.onmessage = (event) => {
+    console.log('websocket event:', event);
+  };
+
   ReactDOM.render(
     <AppContext.Provider value={{ userName }}>
-      <App channels={channels} store={store} />
+      <App channels={channels} store={store} websocket={websocket} />
     </AppContext.Provider>,
     container,
   );

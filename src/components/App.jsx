@@ -13,7 +13,7 @@ const mapStateToProps = state => {
 class App extends React.Component {
 
   render() {
-    const { channels, store } = this.props;
+    const { channels, store, websocket } = this.props;
     const { userName } = this.context;
 
     const getButtonClasses = (idChannel) => {
@@ -43,7 +43,7 @@ class App extends React.Component {
             ))}
           </ul>
         </div>
-        <Chat userName={userName} store={store} />
+        <Chat userName={userName} store={store} websocket={websocket} />
       </div>
     );
   }
