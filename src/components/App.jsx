@@ -11,9 +11,10 @@ const mapStateToProps = state => {
 };
 
 class App extends React.Component {
+
   render() {
     const { channels, store } = this.props;
-    const userName = 'test';
+    const { userName } = this.context;
 
     const getButtonClasses = (idChannel) => {
       const { selectedChannelId } = store.getState();
@@ -47,5 +48,6 @@ class App extends React.Component {
     );
   }
 }
+App.contextType = AppContext;
 
 export default connect(mapStateToProps)(App);
