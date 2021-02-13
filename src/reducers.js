@@ -31,7 +31,7 @@ const appSlice = createSlice({
       state.getMessagesStart = 'requesting';
     },
     getMessagesSuccess: (state, action) => {
-      state.messages.push(action.payload);
+      state.messages = action.payload;
       state.getMessagesState = 'success';
     },
     getMessagesError: (state, action) => {

@@ -13,25 +13,27 @@ const mapStateToProps = (state) => {
 };
 
 class Chat extends React.Component {
-  createMessage = (values, store) => {
+  createMessage = (userName, values, store) => {
     const { selectedChannelId } = store.getState();
-    sendMessage(selectedChannelId, values)(store.dispatch);
+    sendMessage(selectedChannelId, userName, values)(store.dispatch);
   };
 
   renderMessages = (messages) => {
     // const { messages } = store.getState();
     // const messages = useSelector((state) => state.messages);
 
-    return messages.map((message, index) => (
-      <div key={{ index }}>
-        <b>{message.author}</b>: {message.text}
+    return messages.map((message) => (
+      <div key={message.id}>
+        <b>{message.authorName}</b>
+        :
+        {message.text}
       </div>
     ));
   }
 
 
   render() {
-    const { messages, store, createMessageState } = this.props;
+    const { messages, store, createMessageState, userName } = this.props;
     return (
       <div className="col h-100">
         <div className="d-flex flex-column h-100">
@@ -43,7 +45,7 @@ class Chat extends React.Component {
               initialValues={{
                 message: '',
               }}
-              onSubmit={(values) => this.createMessage(values, store)}
+              onSubmit={(values) => this.createMessage(userName, values, store)}
             >
               <Form>
                 <div className="input-group">
