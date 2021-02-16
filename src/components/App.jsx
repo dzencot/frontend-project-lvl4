@@ -48,7 +48,7 @@ const updateChannel = async (authorName, channelName, channelId) => {
   return response;
 };
 
-const onSubmit = async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+const onSubmit = (dispatch) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
   const { authorName, channelName, id } = values;
   try {
     const response = !id
@@ -57,6 +57,7 @@ const onSubmit = async (values, { setSubmitting, setErrors, setStatus, resetForm
     console.log('response: ', response);
     resetForm({});
     setStatus({ success: true });
+    dispatch(toggleEditChannelModal(false));
   } catch (error) {
     // error.clientMessage = `Can't send message in channel id ${values.channelId}`;
     setStatus({ success: false });
@@ -104,7 +105,7 @@ class App extends React.Component {
           initialStatus={{
             success: true,
           }}
-          onSubmit={onSubmit}
+          onSubmit={onSubmit(store.dispatch)}
         >
           {(form) => (
             <Modal show={isEditChannel} onHide={() => closeEditChannelModal(store.dispatch, form)}>

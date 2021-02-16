@@ -6,6 +6,7 @@ import routes from './routes';
 
 const initialState = {
   messages: [],
+  channels: [],
   selectedChannelId: null,
   createMessageState: 'none',
   createMessageError: null,
@@ -39,6 +40,13 @@ const appSlice = createSlice({
     toggleEditChannelModal: (state, action) => {
       state.isEditChannel = action.payload;
     },
+    addChannel: (state, action) => {
+      state.channels.push(action.payload);
+    },
+    renameChannel: (state, action) => {
+      const currentChannel = state.channels.find(({ id }) => id === action.payload.id);
+      currentChannel.name = action.payload.name;
+    },
   },
 });
 
@@ -47,6 +55,7 @@ const { actions, reducer } = appSlice;
 export const {
   getMessagesStart, getMessagesSuccess, getMessagesFail,
   selectChannel, addMessage, toggleEditChannelModal,
+  addChannel, renameChannel,
 } = actions;
 
 export default reducer;
