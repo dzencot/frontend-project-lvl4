@@ -16,16 +16,8 @@ const appSlice = createSlice({
   name: 'slackSlice',
   initialState,
   reducers: {
-    createMessageStart: (state) => {
-      state.createMessageState = 'requesting';
-    },
-    createMessageSuccess: (state, action) => {
+    addMessage: (state, action) => {
       state.messages.push(action.payload);
-      state.createMessageState = 'success';
-    },
-    createMessageError: (state, action) => {
-      state.createMessageError = action.payload.error;
-      state.createMessageState = 'error';
     },
     getMessagesStart: (state) => {
       state.getMessagesStart = 'requesting';
@@ -34,9 +26,9 @@ const appSlice = createSlice({
       state.messages = action.payload;
       state.getMessagesState = 'success';
     },
-    getMessagesError: (state, action) => {
+    getMessagesFail: (state, action) => {
       state.getMessagesError = action.payload.error;
-      state.getMessagesState = 'error';
+      state.getMessagesState = 'failed';
     },
     selectChannel: (state, action) => {
       console.log('selected channel: ', state, action);
@@ -48,9 +40,8 @@ const appSlice = createSlice({
 const { actions, reducer } = appSlice;
 
 export const {
-  createMessageStart, createMessageSuccess, createMessageError,
-  getMessagesStart, getMessagesSuccess, getMessagesError,
-  selectChannel,
+  getMessagesStart, getMessagesSuccess, getMessagesFail,
+  selectChannel, addMessage,
 } = actions;
 
 export default reducer;

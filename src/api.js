@@ -27,11 +27,12 @@ export const sendMessage = (channelId, authorName, message) => async (dispatch) 
     };
     const response = await axios.post(url, body);
     console.log('response: ', response);
-    const newMessage = getMessageFromResponse(_.get(response, 'data.data'));
-    dispatch(actions.createMessageSuccess(newMessage));
+    // const newMessage = getMessageFromResponse(_.get(response, 'data.data'));
+    // dispatch(actions.createMessageSuccess(newMessage));
+    dispatch(actions.createMessageSuccess());
   } catch (error) {
     error.clientMessage = `Can't send message in channel id ${channelId}`;
-    dispatch(actions.createMessageError({ error }));
+    dispatch(actions.createMessageFail({ error }));
   }
 };
 
@@ -45,7 +46,7 @@ export const fetchMessages = (channelId) => async (dispatch) => {
     dispatch(actions.getMessagesSuccess(messages));
   } catch (error) {
     error.clientMessage = `Can't get messages for channel id ${channelId}`;
-    dispatch(actions.getMessagesError({ error }));
+    dispatch(actions.getMessagesFail({ error }));
   }
 };
 

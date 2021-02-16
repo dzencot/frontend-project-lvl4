@@ -1,9 +1,11 @@
 // /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
+import cn from 'classnames';
 import { connect, useSelector, useState } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
-import { sendMessage } from '../api';
+import * as actions from '../reducers';
+import routes from '../routes';
 
 const mapStateToProps = (state) => {
   // const props = {
@@ -12,12 +14,30 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-class Chat extends React.Component {
-  createMessage = (userName, values, store) => {
-    const { selectedChannelId } = store.getState();
-    sendMessage(selectedChannelId, userName, values)(store.dispatch);
-  };
+const onSubmit = async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  const url = routes.channelMessagesPath(values.channelId);
+  try {
+    const body = {
+      data: {
+        attributes: {
+          text: values.message,
+          authorName: values.authorName,
+        },
+      },
+    };
+    const response = await axios.post(url, body);
+    console.log('response: ', response);
+    resetForm({});
+    setStatus({ success: true });
+  } catch (error) {
+    // error.clientMessage = `Can't send message in channel id ${values.channelId}`;
+    setStatus({ success: false });
+    setSubmitting(false);
+    setErrors({ submit: error.message });
+  }
+};
 
+class Chat extends React.Component {
   renderMessages = (messages) => {
     // const { messages } = store.getState();
     // const messages = useSelector((state) => state.messages);
@@ -33,7 +53,7 @@ class Chat extends React.Component {
 
 
   render() {
-    const { messages, store, createMessageState, userName } = this.props;
+    const { messages, userName, selectedChannelId } = this.props;
     return (
       <div className="col h-100">
         <div className="d-flex flex-column h-100">
@@ -44,19 +64,35 @@ class Chat extends React.Component {
             <Formik
               initialValues={{
                 message: '',
+                channelId: selectedChannelId,
+                authorName: userName,
               }}
-              onSubmit={(values) => this.createMessage(userName, values, store)}
+              initialStatus={{
+                success: true,
+              }}
+              onSubmit={onSubmit}
             >
-              <Form>
-                <div className="input-group">
-                  <Field name="message">
-                    {({ field }) => (
-                      <input type="text" disabled={createMessageState === 'requesting'} className="mr-2 form-control" {...field} />
-                    )}
-                  </Field>
-                  <button type="submit" disabled={createMessageState === 'requesting'} className="btn btn-primary">Submit</button>
-                </div>
-              </Form>
+              {(form) => (
+                <Form>
+                  <div className="input-group">
+                    <Field name="message">
+                      {({ field }) => (
+                        <input
+                          type="text"
+                          disabled={form.isSubmitting}
+                          className={cn('mr-2', 'form-control', { 'is-invalid': !form.status.success })}
+                          {...field} // eslint-disable-line react/jsx-props-no-spreading
+                        />
+                      )}
+                    </Field>
+                    <button type="submit" disabled={form.isSubmitting} className="btn btn-primary">Submit</button>
+                    <div className="d-block invalid-feedback">
+                      {!form.status.success ? form.errors.submit : ''}
+                      &nbsp;
+                    </div>
+                  </div>
+                </Form>
+              )}
             </Formik>
           </div>
         </div>

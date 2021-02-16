@@ -6,7 +6,7 @@ import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './se
 
 import AppContext from './AppContext';
 import App from './components/App';
-import reducer, { createMessageSuccess } from './reducers';
+import reducer, { addMessage } from './reducers';
 import { selectChannel } from './api';
 
 const app = (channels) => {
@@ -24,7 +24,7 @@ const app = (channels) => {
 
   const websocket = io();
   websocket.on('newMessage', ({ data: { attributes: message } }) => {
-    store.dispatch(createMessageSuccess(message));
+    store.dispatch(addMessage(message));
   });
 
   ReactDOM.render(
