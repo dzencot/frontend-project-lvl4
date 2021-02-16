@@ -85,7 +85,7 @@ class App extends React.Component {
           <div className="col-3 border-right">
             <div className="d-flex mb-2">
               <span>Channels</span>
-              <button type="button" className="ml-auto p-0 btn btn-link" onClick={() => store.dispatch(toggleEditChannelModal(true))}>+</button>
+              <Button type="button" className="ml-auto" onClick={() => store.dispatch(toggleEditChannelModal(true))}>+</Button>
             </div>
             <ul className="nav flex-column nav-pills nav-fill">
               {channels.map(({ name, id }) => (
