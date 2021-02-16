@@ -26,6 +26,9 @@ const app = (channels) => {
   websocket.on('newMessage', ({ data: { attributes: message } }) => {
     store.dispatch(addMessage(message));
   });
+  // websocket.on('newMessage', ({ data: { attributes: message } }) => {
+  //   store.dispatch(addMessage(message));
+  // });
 
   ReactDOM.render(
     <AppContext.Provider value={{ userName }}>

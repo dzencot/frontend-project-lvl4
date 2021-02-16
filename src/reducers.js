@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+import _ from 'lodash';
 import { createAction, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from './routes';
@@ -10,6 +11,7 @@ const initialState = {
   createMessageError: null,
   getMessagesState: 'none',
   getMessageError: null,
+  isEditChannel: false,
 };
 
 const appSlice = createSlice({
@@ -34,6 +36,9 @@ const appSlice = createSlice({
       console.log('selected channel: ', state, action);
       state.selectedChannelId = action.payload;
     },
+    toggleEditChannelModal: (state, action) => {
+      state.isEditChannel = action.payload;
+    },
   },
 });
 
@@ -41,7 +46,7 @@ const { actions, reducer } = appSlice;
 
 export const {
   getMessagesStart, getMessagesSuccess, getMessagesFail,
-  selectChannel, addMessage,
+  selectChannel, addMessage, toggleEditChannelModal,
 } = actions;
 
 export default reducer;
