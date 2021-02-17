@@ -6,8 +6,7 @@ import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './se
 
 import AppContext from './AppContext';
 import App from './components/App';
-import reducer, { addMessage, addChannel, renameChannel } from './reducers';
-import { selectChannel } from './api';
+import reducer, { addMessage, addChannel, renameChannel, removeChannel, selectDefaultChannel } from './reducers';
 
 const app = (channels) => {
   let userName = getCurrentUserName();
@@ -46,14 +45,8 @@ const app = (channels) => {
     };
     store.dispatch(renameChannel(channelData));
   });
-  websocket.on('removeChannel', ({ data: { attributes } }) => {
-    console.log(attributes);
-    const channelData = {
-      id: attributes.id,
-      name: attributes.name,
-      removable: attributes.removable,
-    };
-    store.dispatch(renameChannel(channelData));
+  websocket.on('removeChannel', ({ data }) => {
+    store.dispatch(removeChannel(data.id));
   });
 
   ReactDOM.render(
@@ -63,7 +56,7 @@ const app = (channels) => {
     container,
   );
 
-  selectChannel(1)(store.dispatch);
+  store.dispatch(selectDefaultChannel());
 };
 
 export default app;

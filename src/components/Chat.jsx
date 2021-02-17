@@ -14,14 +14,15 @@ const mapStateToProps = (state) => {
   return state;
 };
 
-const onSubmit = async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
-  const url = routes.channelMessagesPath(values.channelId);
+const onSubmit = async (selectedChannelId, values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  const url = routes.channelMessagesPath(selectedChannelId);
   try {
     const body = {
       data: {
         attributes: {
           text: values.message,
           authorName: values.authorName,
+          channelId: selectedChannelId,
         },
       },
     };
@@ -64,13 +65,12 @@ class Chat extends React.Component {
             <Formik
               initialValues={{
                 message: '',
-                channelId: selectedChannelId,
                 authorName: userName,
               }}
               initialStatus={{
                 success: true,
               }}
-              onSubmit={onSubmit}
+              onSubmit={(...params) => onSubmit(selectedChannelId, ...params)}
             >
               {(form) => (
                 <Form>
