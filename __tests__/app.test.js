@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { screen, waitFor } from '@testing-library/dom';
 import userEvent from '@testing-library/user-event';
+import { act } from 'react-dom/test-utils';
 import nock from 'nock';
 
 import app from '../src/app';
@@ -25,9 +26,11 @@ afterAll(() => {
 beforeEach(async () => {
   document.body.innerHTML = initHtml;
 
-  app([]);
+  act(() => {
+    app([]);
+  });
 });
 
 test('App init', () => {
-  expect(true).toBeTruthy();
+  expect(screen.getByText(/Channels/i)).toBeInTheDocument();
 });
