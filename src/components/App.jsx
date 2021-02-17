@@ -8,7 +8,7 @@ import cn from 'classnames';
 import Chat from './Chat';
 import AppContext from '../AppContext';
 import { selectChannel } from '../api';
-import { toggleEditChannelModal } from '../reducers';
+import * as actions from '../reducers';
 import routes from '../routes';
 
 const mapStateToProps = state => {
@@ -17,7 +17,12 @@ const mapStateToProps = state => {
 
 const closeEditChannelModal = (dispatch, form) => {
   form.resetForm();
-  dispatch(toggleEditChannelModal(false));
+  dispatch(actions.closeEditChannelModal());
+};
+
+const closeDeleteChannelModal = (dispatch, form) => {
+  form.resetForm();
+  dispatch(actions.closeDeleteChannelModal());
 };
 
 const createChannel = async (authorName, channelName) => {
@@ -39,25 +44,26 @@ const updateChannel = async (authorName, channelName, channelId) => {
   const body = {
     data: {
       attributes: {
+        id: channelId,
         name: channelName,
-        createdBy: authorName,
+        editedBy: authorName,
       },
     },
   };
-  const response = await axios.put(url, body);
+  const response = await axios.patch(url, body);
   return response;
 };
 
-const onSubmit = (dispatch) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
-  const { authorName, channelName, id } = values;
+const onSubmit = (dispatch, editChannelId) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  const { authorName, channelName } = values;
   try {
-    const response = !id
+    const response = !editChannelId
       ? await createChannel(authorName, channelName)
-      : await updateChannel(authorName, channelName, id);
+      : await updateChannel(authorName, channelName, editChannelId);
     console.log('response: ', response);
     resetForm({});
     setStatus({ success: true });
-    dispatch(toggleEditChannelModal(false));
+    dispatch(actions.closeEditChannelModal());
   } catch (error) {
     // error.clientMessage = `Can't send message in channel id ${values.channelId}`;
     setStatus({ success: false });
@@ -66,9 +72,23 @@ const onSubmit = (dispatch) => async (values, { setSubmitting, setErrors, setSta
   }
 };
 
+const deleteChannel = (dispatch, deleteChannelId) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+  const url = routes.channelPath(deleteChannelId);
+  try {
+    await axios.delete(url);
+    resetForm({});
+    setStatus({ success: true });
+    dispatch(actions.closeDeleteChannelModal());
+  } catch (error) {
+    setStatus({ success: false });
+    setSubmitting(false);
+    setErrors({ submit: error.message });
+  }
+};
+
 class App extends React.Component {
   render() {
-    const { channels, store, isEditChannel } = this.props;
+    const { channels, store, isEditChannel, isDeleteChannel, editChannelId, deleteChannelId } = this.props;
     const { userName } = this.context;
 
     const getButtonClasses = (idChannel) => {
@@ -91,12 +111,12 @@ class App extends React.Component {
               {channels.map(({ name, id, removable }) => (
                 <li key={id} className="nav-item d-flex">
                   <Button type="button" className={getButtonClasses(id)} onClick={() => selectChannel(id)(store.dispatch)}>{name}</Button>
-                  {removable ?
+                  {removable ? (
                     <>
-                      <Button type="button" className="btn btn-block mb-2">Edit</Button>
-                      <Button variant="secondary">Delete</Button>
+                      <Button type="button" className="btn btn-block mb-2" onClick={() => store.dispatch(actions.openEditChannelModal(id))}>Edit</Button>
+                      <Button variant="secondary" onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}>Delete</Button>
                     </>
-                    : ''}
+                  ) : ''}
                 </li>
               ))}
             </ul>
@@ -111,7 +131,7 @@ class App extends React.Component {
           initialStatus={{
             success: true,
           }}
-          onSubmit={onSubmit(store.dispatch)}
+          onSubmit={onSubmit(store.dispatch, editChannelId)}
         >
           {(form) => (
             <Modal show={isEditChannel} onHide={() => closeEditChannelModal(store.dispatch, form)}>
@@ -140,6 +160,37 @@ class App extends React.Component {
                       </Button>
                       <Button type="submit" disabled={form.isSubmitting}>Submit</Button>
                     </div>
+                  </div>
+                </Form>
+              </Modal.Body>
+            </Modal>
+          )}
+        </Formik>
+        <Formik
+          initialValues={{
+            channelId: deleteChannelId,
+            authorName: userName,
+          }}
+          initialStatus={{
+            success: true,
+          }}
+          onSubmit={deleteChannel(store.dispatch, deleteChannelId)}
+        >
+          {(form) => (
+            <Modal
+              show={isDeleteChannel}
+              onHide={() => closeDeleteChannelModal(store.dispatch, form)}
+            >
+              <Modal.Header closeButton>
+                <Modal.Title>Delete channel</Modal.Title>
+              </Modal.Header>
+              <Modal.Body>
+                <Form>
+                  <div className="form-group">
+                    <Button variant="secondary" className="mr-2" onClick={() => closeDeleteChannelModal(store.dispatch, form)}>
+                      Cancel
+                    </Button>
+                    <Button type="submit" disabled={form.isSubmitting}>Delete</Button>
                   </div>
                 </Form>
               </Modal.Body>

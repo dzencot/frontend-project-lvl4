@@ -13,6 +13,9 @@ const initialState = {
   getMessagesState: 'none',
   getMessageError: null,
   isEditChannel: false,
+  editChannelId: null,
+  isDeleteChannel: false,
+  deleteChannelId: null,
 };
 
 const appSlice = createSlice({
@@ -37,9 +40,25 @@ const appSlice = createSlice({
       console.log('selected channel: ', state, action);
       state.selectedChannelId = action.payload;
     },
-    toggleEditChannelModal: (state, action) => {
-      state.isEditChannel = action.payload;
+
+    openEditChannelModal: (state, action) => {
+      state.isEditChannel = true;
+      state.editChannelId = action.payload;
     },
+    closeEditChannelModal: (state) => {
+      state.isEditChannel = false;
+      state.editChannelId = null;
+    },
+
+    openDeleteChannelModal: (state, action) => {
+      state.isDeleteChannel = true;
+      state.deleteChannelId = action.payload;
+    },
+    closeDeleteChannelModal: (state) => {
+      state.isDeleteChannel = false;
+      state.deleteChannelId = null;
+    },
+
     addChannel: (state, action) => {
       state.channels.push(action.payload);
     },
@@ -55,7 +74,9 @@ const { actions, reducer } = appSlice;
 export const {
   getMessagesStart, getMessagesSuccess, getMessagesFail,
   selectChannel, addMessage, toggleEditChannelModal,
-  addChannel, renameChannel,
+  addChannel, renameChannel, toggleDeleteChannelModal,
+  openEditChannelModal, openDeleteChannelModal,
+  closeEditChannelModal, closeDeleteChannelModal,
 } = actions;
 
 export default reducer;

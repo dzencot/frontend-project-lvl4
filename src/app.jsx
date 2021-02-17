@@ -46,6 +46,15 @@ const app = (channels) => {
     };
     store.dispatch(renameChannel(channelData));
   });
+  websocket.on('removeChannel', ({ data: { attributes } }) => {
+    console.log(attributes);
+    const channelData = {
+      id: attributes.id,
+      name: attributes.name,
+      removable: attributes.removable,
+    };
+    store.dispatch(renameChannel(channelData));
+  });
 
   ReactDOM.render(
     <AppContext.Provider value={{ userName }}>
