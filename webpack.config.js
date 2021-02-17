@@ -1,9 +1,7 @@
 // @ts-check
 const webpack = require('webpack');
 
-// const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const isProduction = process.env.NODE_ENV === 'production';
-// const isDevelopment = !isProduction;
 console.log('isProduction', isProduction);
 
 module.exports = {
@@ -22,8 +20,6 @@ module.exports = {
     publicPath: '/assets/',
   },
   plugins: [
-    // new MiniCssExtractPlugin(),
-    // new EnvironmentPlugin(['TEST']),
     new webpack.DefinePlugin({
       'process.env': JSON.stringify(process.env),
     }),
