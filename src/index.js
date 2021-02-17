@@ -18,4 +18,4 @@ if (process.env.NODE_ENV !== 'production') {
 console.log('it works!');
 console.log('gon', gon);
 const { channels } = gon;
-app(channels);
+// app(channels);

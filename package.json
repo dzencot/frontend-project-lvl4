@@ -77,9 +77,13 @@
     "webpack-dev-server": "^3.10.3"
   },
   "devDependencies": {
+    "@testing-library/dom": "^7.29.4",
+    "@testing-library/jest-dom": "^5.11.9",
+    "@testing-library/user-event": "^12.7.1",
     "@types/jest": "^25.1.4",
     "babel-eslint": "^10.1.0",
     "babel-jest": "^25.2.3",
+    "babel-polyfill": "^6.26.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-import-resolver-webpack": "^0.12.1",
@@ -87,8 +91,11 @@
     "eslint-plugin-jest": "^23.8.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.19.0",
+    "fs": "^0.0.1-security",
     "jest": "^25.2.3",
     "jest-cli": "^25.2.3",
-    "nodemon": "^2.0.2"
+    "nock": "^13.0.7",
+    "nodemon": "^2.0.2",
+    "path": "^0.12.7"
   }
 }
