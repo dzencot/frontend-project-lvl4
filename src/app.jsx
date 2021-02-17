@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import io from 'socket.io-client';
+import Rollbar from 'rollbar';
 import { configureStore } from '@reduxjs/toolkit';
 import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './services';
 
@@ -9,6 +10,11 @@ import App from './components/App';
 import reducer, { addMessage, addChannel, renameChannel, removeChannel, selectDefaultChannel } from './reducers';
 
 const app = (channels) => {
+  const rollbar = new Rollbar({
+    accessToken: process.env.ROLLBAR_TOKEN,
+    captureUncaught: true,
+    captureUnhandledRejections: true,
+  });
   let userName = getCurrentUserName();
   if (!userName) {
     userName = getRandomUserName();
