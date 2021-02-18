@@ -10,7 +10,6 @@ import App from './components/App';
 import reducer, { addMessage, addChannel, renameChannel, removeChannel, selectDefaultChannel } from './reducers';
 
 const app = (channels) => {
-  console.log('env:', process);
   const rollbar = new Rollbar({
     accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,

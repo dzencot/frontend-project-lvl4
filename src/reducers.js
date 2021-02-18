@@ -4,8 +4,6 @@ import { createAction, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 import routes from './routes';
 
-console.log('test!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-console.log(process);
 const initialState = {
   messages: [],
   channels: [],

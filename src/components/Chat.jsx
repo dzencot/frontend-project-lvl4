@@ -79,13 +79,14 @@ class Chat extends React.Component {
                       {({ field }) => (
                         <input
                           type="text"
+                          aria-label="message"
                           disabled={form.isSubmitting}
                           className={cn('mr-2', 'form-control', { 'is-invalid': !form.status.success })}
                           {...field} // eslint-disable-line react/jsx-props-no-spreading
                         />
                       )}
                     </Field>
-                    <button type="submit" disabled={form.isSubmitting} className="btn btn-primary">Submit</button>
+                    <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">Submit</button>
                     <div className="d-block invalid-feedback">
                       {!form.status.success ? form.errors.submit : ''}
                       &nbsp;

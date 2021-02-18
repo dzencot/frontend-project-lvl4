@@ -105,7 +105,7 @@ class App extends React.Component {
           <div className="col-3 border-right">
             <div className="d-flex mb-2">
               <span>Channels</span>
-              <Button type="button" className="ml-auto" onClick={() => store.dispatch(actions.openEditChannelModal())}>+</Button>
+              <Button type="button" aria-label="add-modal" className="ml-auto" onClick={() => store.dispatch(actions.openEditChannelModal())}>+</Button>
             </div>
             <ul className="nav flex-column nav-pills nav-fill">
               {channels.map(({ name, id, removable }) => (
@@ -113,8 +113,8 @@ class App extends React.Component {
                   <Button type="button" className={getButtonClasses(id)} onClick={() => selectChannel(id)(store.dispatch)}>{name}</Button>
                   {removable ? (
                     <>
-                      <Button type="button" className="btn btn-block mb-2" onClick={() => store.dispatch(actions.openEditChannelModal(id))}>Edit</Button>
-                      <Button variant="secondary" onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}>Delete</Button>
+                      <Button type="button" aria-label="edit-modal" className="btn btn-block mb-2" onClick={() => store.dispatch(actions.openEditChannelModal(id))}>Edit</Button>
+                      <Button variant="secondary" aria-label="delete-modal" onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}>Delete</Button>
                     </>
                   ) : ''}
                 </li>
@@ -145,6 +145,7 @@ class App extends React.Component {
                       {({ field }) => (
                         <input
                           type="text"
+                          aria-label="channel-name"
                           disabled={form.isSubmitting}
                           className={cn('mb-2', 'form-control', { 'is-invalid': !form.status.success })}
                           {...field} // eslint-disable-line react/jsx-props-no-spreading
@@ -155,10 +156,10 @@ class App extends React.Component {
                       {!form.status.success ? form.errors.submit : ''}
                     </div>
                     <div className="d-flex justify-content-end">
-                      <Button variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
+                      <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
                         Cancel
                       </Button>
-                      <Button type="submit" disabled={form.isSubmitting}>Submit</Button>
+                      <Button type="submit" aria-label="channel-save" disabled={form.isSubmitting}>Submit</Button>
                     </div>
                   </div>
                 </Form>
