@@ -1,8 +1,5 @@
 /* eslint-disable no-param-reassign */
-import _ from 'lodash';
-import { createAction, createSlice } from '@reduxjs/toolkit';
-import axios from 'axios';
-import routes from './routes';
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
   messages: [],

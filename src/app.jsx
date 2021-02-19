@@ -3,14 +3,20 @@ import ReactDOM from 'react-dom';
 // import io from 'socket.io-client';
 import Rollbar from 'rollbar';
 import { configureStore } from '@reduxjs/toolkit';
-import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './services';
+import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './utils';
 
 import AppContext from './AppContext';
 import App from './components/App';
-import reducer, { addMessage, addChannel, renameChannel, removeChannel, selectDefaultChannel } from './reducers';
+import reducer, {
+  addMessage,
+  addChannel,
+  renameChannel,
+  removeChannel,
+  selectDefaultChannel,
+} from './reducers';
 
 const init = (initData, websocket) => {
-  const rollbar = new Rollbar({
+  const rollbar = new Rollbar({ // eslint-disable-line no-unused-vars
     accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,

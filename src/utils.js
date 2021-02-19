@@ -1,4 +1,3 @@
-import axios from 'axios';
 import Cookies from 'js-cookie';
 import faker from 'faker';
 
@@ -12,11 +11,8 @@ const saveCurrentUserName = (userName) => {
 
 const getRandomUserName = () => faker.internet.userName();
 
-const getMessages = (idChat) => axios.get('');
-
 export {
   saveCurrentUserName,
   getCurrentUserName,
   getRandomUserName,
-  getMessages,
 };

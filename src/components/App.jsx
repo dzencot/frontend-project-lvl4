@@ -1,19 +1,15 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import { configureStore } from '@reduxjs/toolkit';
 import { Button, Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
 import Chat from './Chat';
 import AppContext from '../AppContext';
-import { selectChannel } from '../api';
 import * as actions from '../reducers';
 import routes from '../routes';
 
-const mapStateToProps = state => {
-  return state;
-};
+const mapStateToProps = (state) => state;
 
 const closeEditChannelModal = (dispatch, form) => {
   form.resetForm();
@@ -54,44 +50,53 @@ const updateChannel = async (authorName, channelName, channelId) => {
   return response;
 };
 
-const onSubmit = (dispatch, editChannelId) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+const onSubmit = (dispatch, editChannelId) => async (values, form) => {
   const { authorName, channelName } = values;
   try {
     const response = !editChannelId
       ? await createChannel(authorName, channelName)
       : await updateChannel(authorName, channelName, editChannelId);
     console.log('response: ', response);
-    resetForm({});
-    setStatus({ success: true });
+    form.resetForm({});
+    form.setStatus({ success: true });
     dispatch(actions.closeEditChannelModal());
   } catch (error) {
     // error.clientMessage = `Can't send message in channel id ${values.channelId}`;
-    setStatus({ success: false });
-    setSubmitting(false);
-    setErrors({ submit: error.message });
+    form.setStatus({ success: false });
+    form.setSubmitting(false);
+    form.setErrors({ submit: error.message });
   }
 };
 
-const deleteChannel = (dispatch, deleteChannelId) => async (values, { setSubmitting, setErrors, setStatus, resetForm }) => {
-  const url = routes.channelPath(deleteChannelId);
-  try {
-    await axios.delete(url);
-    resetForm({});
-    setStatus({ success: true });
-    dispatch(actions.closeDeleteChannelModal());
-  } catch (error) {
-    setStatus({ success: false });
-    setSubmitting(false);
-    setErrors({ submit: error.message });
-  }
-};
+const deleteChannel = (dispatch, deleteChannelId) =>
+  async (values, form) => { // eslint-disable-line
+    const url = routes.channelPath(deleteChannelId);
+    try {
+      await axios.delete(url);
+      form.resetForm({});
+      form.setStatus({ success: true });
+      dispatch(actions.closeDeleteChannelModal());
+    } catch (error) {
+      form.setStatus({ success: false });
+      form.setSubmitting(false);
+      form.setErrors({ submit: error.message });
+    }
+  };
 
 class App extends React.Component {
   render() {
-    const { channels, store, isEditChannel, isDeleteChannel, editChannelId, deleteChannelId, currentChannelId } = this.props;
+    const {
+      channels,
+      store,
+      isEditChannel,
+      isDeleteChannel,
+      editChannelId,
+      deleteChannelId,
+      currentChannelId,
+    } = this.props;
     const { userName } = this.context;
 
-    const getButtonClasses = (idChannel) => {
+    const getButtonClasses = (idChannel) => { // eslint-disable-line
       // const { currentChannelId } = store.getState();
       return cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
         'btn-primary': idChannel === currentChannelId,
@@ -110,7 +115,7 @@ class App extends React.Component {
             <ul className="nav flex-column nav-pills nav-fill">
               {channels.map(({ name, id, removable }) => (
                 <li key={id} className="nav-item d-flex">
-                  <Button type="button" className={getButtonClasses(id)} onClick={() => selectChannel(id)(store.dispatch)}>{name}</Button>
+                  <Button type="button" className={getButtonClasses(id)} onClick={() => store.dispatch(actions.selectChannel(id))}>{name}</Button>
                   {removable ? (
                     <>
                       <Button type="button" aria-label="edit-modal" className="btn btn-block mb-2" onClick={() => store.dispatch(actions.openEditChannelModal(id))}>Edit</Button>

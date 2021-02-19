@@ -1,20 +1,14 @@
 // /* eslint-disable react/prefer-stateless-function */
 import React from 'react';
 import cn from 'classnames';
-import { connect, useSelector, useState } from 'react-redux';
+import { connect } from 'react-redux';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
-import * as actions from '../reducers';
 import routes from '../routes';
 
-const mapStateToProps = (state) => {
-  // const props = {
-  //   messages: state.messages,
-  // };
-  return state;
-};
+const mapStateToProps = (state) => state;
 
-const onSubmit = async (selectedChannelId, values, { setSubmitting, setErrors, setStatus, resetForm }) => {
+const onSubmit = async (selectedChannelId, values, form) => {
   const url = routes.channelMessagesPath(selectedChannelId);
   try {
     const body = {
@@ -28,18 +22,18 @@ const onSubmit = async (selectedChannelId, values, { setSubmitting, setErrors, s
     };
     const response = await axios.post(url, body);
     console.log('response: ', response);
-    resetForm({});
-    setStatus({ success: true });
+    form.resetForm({});
+    form.setStatus({ success: true });
   } catch (error) {
     // error.clientMessage = `Can't send message in channel id ${values.channelId}`;
-    setStatus({ success: false });
-    setSubmitting(false);
-    setErrors({ submit: error.message });
+    form.setStatus({ success: false });
+    form.setSubmitting(false);
+    form.setErrors({ submit: error.message });
   }
 };
 
 class Chat extends React.Component {
-  renderMessages = (messages) => {
+  renderMessages = (messages) => { // eslint-disable-line
     // const { messages } = store.getState();
     // const messages = useSelector((state) => state.messages);
 
