@@ -8,6 +8,8 @@ import Chat from './Chat';
 import AppContext from '../AppContext';
 import * as actions from '../reducers';
 import routes from '../routes';
+import pencilIcon from '../../assets/icons/pencil.svg';
+import trashIcon from '../../assets/icons/trash.svg';
 
 const mapStateToProps = (state) => state;
 
@@ -118,8 +120,22 @@ class App extends React.Component {
                   <Button type="button" className={getButtonClasses(id)} onClick={() => store.dispatch(actions.selectChannel(id))}>{name}</Button>
                   {removable ? (
                     <>
-                      <Button type="button" aria-label="edit-modal" className="btn btn-block mb-2" onClick={() => store.dispatch(actions.openEditChannelModal(id))}>Edit</Button>
-                      <Button variant="secondary" aria-label="delete-modal" onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}>Delete</Button>
+                      <Button
+                        type="button"
+                        aria-label="edit-modal"
+                        className="mb-2 ml-2 btn-light"
+                        onClick={() => store.dispatch(actions.openEditChannelModal(id))}
+                      >
+                        <img src={pencilIcon} alt="Edit shannel" />
+                      </Button>
+                      <Button
+                        variant="secondary"
+                        aria-label="delete-modal"
+                        className="mb-2 ml-2 btn-light"
+                        onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}
+                      >
+                        <img src={trashIcon} alt="Delete shannel" />
+                      </Button>
                     </>
                   ) : ''}
                 </li>
