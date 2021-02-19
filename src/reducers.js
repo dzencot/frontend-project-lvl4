@@ -7,7 +7,7 @@ import routes from './routes';
 const initialState = {
   messages: [],
   channels: [],
-  selectedChannelId: null,
+  currentChannelId: null,
   createMessageState: 'none',
   createMessageError: null,
   getMessagesState: 'none',
@@ -16,7 +16,7 @@ const initialState = {
   editChannelId: null,
   isDeleteChannel: false,
   deleteChannelId: null,
-  defaultChannelid: 1,
+  defaultChannelid: null,
 };
 
 const appSlice = createSlice({
@@ -39,7 +39,7 @@ const appSlice = createSlice({
     },
     selectChannel: (state, action) => {
       console.log('selected channel: ', state, action);
-      state.selectedChannelId = action.payload;
+      state.currentChannelId = action.payload;
     },
 
     openEditChannelModal: (state, action) => {
@@ -56,8 +56,8 @@ const appSlice = createSlice({
       state.deleteChannelId = action.payload;
     },
     closeDeleteChannelModal: (state) => {
-      if (state.deleteChannelId === state.selectedChannelId) {
-        state.selectedChannelId = state.defaultChannelid;
+      if (state.deleteChannelId === state.currentChannelId) {
+        state.currentChannelId = state.defaultChannelid;
       }
       state.isDeleteChannel = false;
       state.deleteChannelId = null;
@@ -75,7 +75,7 @@ const appSlice = createSlice({
     },
 
     selectDefaultChannel: (state) => {
-      state.selectedChannelId = state.defaultChannelid;
+      state.currentChannelId = state.defaultChannelid;
     },
   },
 });

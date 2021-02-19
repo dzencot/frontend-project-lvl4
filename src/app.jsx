@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import io from 'socket.io-client';
+// import io from 'socket.io-client';
 import Rollbar from 'rollbar';
 import { configureStore } from '@reduxjs/toolkit';
 import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './services';
@@ -9,7 +9,7 @@ import AppContext from './AppContext';
 import App from './components/App';
 import reducer, { addMessage, addChannel, renameChannel, removeChannel, selectDefaultChannel } from './reducers';
 
-const app = (channels) => {
+const init = (initData, websocket) => {
   const rollbar = new Rollbar({
     accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,
@@ -25,13 +25,12 @@ const app = (channels) => {
 
   const store = configureStore({
     preloadedState: {
-      messages: [],
-      channels,
+      ...initData,
+      defaultChannelid: initData.currentChannelId,
     },
     reducer,
   });
 
-  const websocket = io();
   websocket.on('newMessage', ({ data: { attributes: message } }) => {
     store.dispatch(addMessage(message));
   });
@@ -65,4 +64,4 @@ const app = (channels) => {
   store.dispatch(selectDefaultChannel());
 };
 
-export default app;
+export default init;

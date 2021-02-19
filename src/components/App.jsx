@@ -88,14 +88,14 @@ const deleteChannel = (dispatch, deleteChannelId) => async (values, { setSubmitt
 
 class App extends React.Component {
   render() {
-    const { channels, store, isEditChannel, isDeleteChannel, editChannelId, deleteChannelId } = this.props;
+    const { channels, store, isEditChannel, isDeleteChannel, editChannelId, deleteChannelId, currentChannelId } = this.props;
     const { userName } = this.context;
 
     const getButtonClasses = (idChannel) => {
-      const { selectedChannelId } = store.getState();
+      // const { currentChannelId } = store.getState();
       return cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
-        'btn-primary': idChannel === selectedChannelId,
-        'btn-light': idChannel !== selectedChannelId,
+        'btn-primary': idChannel === currentChannelId,
+        'btn-light': idChannel !== currentChannelId,
       });
     };
 
@@ -159,7 +159,7 @@ class App extends React.Component {
                       <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
                         Cancel
                       </Button>
-                      <Button type="submit" aria-label="channel-save" disabled={form.isSubmitting}>Submit</Button>
+                      <Button type="submit" aria-label="channel-submit" disabled={form.isSubmitting}>Submit</Button>
                     </div>
                   </div>
                 </Form>

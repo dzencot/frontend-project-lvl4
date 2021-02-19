@@ -2,6 +2,7 @@
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
+import io from 'socket.io-client';
 
 import '../assets/application.scss';
 
@@ -15,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
   localStorage.debug = 'chat:*';
 }
 
-console.log('it works!');
-console.log('gon', gon);
-const { channels } = gon;
-// app(channels);
+const data = gon;
+const websocket = io();
+console.log('gon data:', gon);
+app(data, websocket);
