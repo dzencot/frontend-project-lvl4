@@ -52,7 +52,7 @@ const updateChannel = async (authorName, channelName, channelId) => {
   return response;
 };
 
-const onSubmit = (dispatch, editChannelId) => async (values, form) => {
+const submitEditModal = (dispatch, editChannelId) => async (values, form) => {
   const { authorName, channelName } = values;
   try {
     const response = !editChannelId
@@ -97,6 +97,8 @@ class App extends React.Component {
       currentChannelId,
     } = this.props;
     const { userName } = this.context;
+
+    const editChannelData = channels.find(({ id }) => id === editChannelId);
 
     const getButtonClasses = (idChannel) => { // eslint-disable-line
       // const { currentChannelId } = store.getState();
@@ -145,19 +147,20 @@ class App extends React.Component {
           <Chat userName={userName} store={store} />
         </div>
         <Formik
+          enableReinitialize
           initialValues={{
-            channelName: '',
+            channelName: editChannelData ? editChannelData.name : '',
             authorName: userName,
           }}
           initialStatus={{
             success: true,
           }}
-          onSubmit={onSubmit(store.dispatch, editChannelId)}
+          onSubmit={submitEditModal(store.dispatch, editChannelId)}
         >
           {(form) => (
             <Modal show={isEditChannel} onHide={() => closeEditChannelModal(store.dispatch, form)}>
               <Modal.Header closeButton>
-                <Modal.Title>Add channel</Modal.Title>
+                <Modal.Title>{isEditChannel ? 'Edit channel' : 'Add channel'}</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form>
@@ -204,15 +207,17 @@ class App extends React.Component {
               onHide={() => closeDeleteChannelModal(store.dispatch, form)}
             >
               <Modal.Header closeButton>
-                <Modal.Title>Delete channel</Modal.Title>
+                <Modal.Title>Delete channel?</Modal.Title>
               </Modal.Header>
               <Modal.Body>
                 <Form>
                   <div className="form-group">
-                    <Button variant="secondary" className="mr-2" onClick={() => closeDeleteChannelModal(store.dispatch, form)}>
-                      Cancel
-                    </Button>
-                    <Button type="submit" disabled={form.isSubmitting}>Delete</Button>
+                    <div className="d-flex justify-content-end">
+                      <Button variant="secondary" className="mr-2" onClick={() => closeDeleteChannelModal(store.dispatch, form)}>
+                        Cancel
+                      </Button>
+                      <Button type="submit" className="btn-danger" disabled={form.isSubmitting}>Delete</Button>
+                    </div>
                   </div>
                 </Form>
               </Modal.Body>

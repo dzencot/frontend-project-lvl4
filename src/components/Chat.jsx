@@ -48,12 +48,13 @@ class Chat extends React.Component {
 
 
   render() {
-    const { messages, userName, selectedChannelId } = this.props;
+    const { messages, userName, currentChannelId } = this.props;
+    const currentMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
     return (
       <div className="col h-100">
         <div className="d-flex flex-column h-100">
           <div id="messages-box" className="chat-messages overflow-auto mb-3">
-            {this.renderMessages(messages)}
+            {this.renderMessages(currentMessages)}
           </div>
           <div className="mt-auto">
             <Formik
@@ -64,7 +65,7 @@ class Chat extends React.Component {
               initialStatus={{
                 success: true,
               }}
-              onSubmit={(...params) => onSubmit(selectedChannelId, ...params)}
+              onSubmit={(...params) => onSubmit(currentChannelId, ...params)}
             >
               {(form) => (
                 <Form>

@@ -69,6 +69,10 @@ const appSlice = createSlice({
     },
     removeChannel: (state, action) => {
       state.channels = state.channels.filter(({ id }) => id !== action.payload);
+      state.messages = state.messages.filter(({ idChannel }) => idChannel !== action.payload);
+      if (state.currentChannelId === action.payload) {
+        state.currentChannelId = state.defaultChannelid;
+      }
     },
 
     selectDefaultChannel: (state) => {
