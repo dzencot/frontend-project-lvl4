@@ -1,0 +1,16 @@
+{
+  "title": "Слак-чат",
+  "description": "Простой слак-чат",
+  "channels-title": "Каналы",
+  "submit": "Отправить",
+  "save": "Сохранить",
+  "cancel": "Отменить",
+  "delete": "Удалить",
+  "edit channel": "Редактировать канал",
+  "add channel": "Добавить канал",
+  "remove channel": "Удалить канал",
+  "errors": {
+    "Network Error": "Ошибка соединения"
+  }
+}
+

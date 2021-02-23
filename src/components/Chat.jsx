@@ -8,6 +8,8 @@ import {
   Field,
 } from 'formik';
 import axios from 'axios';
+import { useTranslation } from 'react-i18next';
+
 import routes from '../routes';
 
 const mapStateToProps = (state) => state;
@@ -15,6 +17,8 @@ const mapStateToProps = (state) => state;
 function Chat(props) {
   const { messages, userName, currentChannelId } = props;
   const currentMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+
+  const { t } = useTranslation();
 
   const textInput = useRef(null);
 
@@ -84,9 +88,9 @@ function Chat(props) {
                       />
                     )}
                   </Field>
-                  <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">Submit</button>
+                  <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">{t('submit')}</button>
                   <div className="d-block invalid-feedback">
-                    {!form.status.success ? form.errors.submit : ''}
+                    {!form.status.success ? t(`errors.${form.errors.submit}`) : ''}
                     &nbsp;
                   </div>
                 </div>

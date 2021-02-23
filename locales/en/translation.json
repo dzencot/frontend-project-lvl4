@@ -1,0 +1,14 @@
+{
+  "title": "Slack chat",
+  "description": "Simple slack chat",
+  "channels-title": "Channels",
+  "submit": "Submit",
+  "save": "Save",
+  "cancel": "Cancel",
+  "delete": "Delete",
+  "edit channel": "Edit channel",
+  "add channel": "Add channel",
+  "errors": {
+    "Network Error": "Network error"
+  }
+}

@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 import { Button, Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
+import { useTranslation } from 'react-i18next';
+
 import Chat from './Chat';
 import AppContext from '../AppContext';
 import * as actions from '../reducers';
 import routes from '../routes';
+
 import pencilIcon from '../../assets/icons/pencil.svg';
 import trashIcon from '../../assets/icons/trash.svg';
 
@@ -86,148 +89,148 @@ const deleteChannel = (dispatch, deleteChannelId) =>
     }
   };
 
-class App extends React.Component {
-  render() {
-    const {
-      channels,
-      store,
-      isEditChannel,
-      isDeleteChannel,
-      editChannelId,
-      deleteChannelId,
-      currentChannelId,
-    } = this.props;
-    const { userName } = this.context;
+function App(props) {
+  const {
+    channels,
+    store,
+    isEditChannel,
+    isDeleteChannel,
+    editChannelId,
+    deleteChannelId,
+    currentChannelId,
+  } = props;
+  const { userName } = useContext(AppContext);
 
-    const editChannelData = channels.find(({ id }) => id === editChannelId);
+  const { t } = useTranslation();
 
-    const getButtonClasses = (idChannel) => { // eslint-disable-line
-      // const { currentChannelId } = store.getState();
-      return cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
-        'btn-primary': idChannel === currentChannelId,
-        'btn-light': idChannel !== currentChannelId,
-      });
-    };
+  const editChannelData = channels.find(({ id }) => id === editChannelId);
 
-    return (
-      <>
-        <div className="row h-100 pb-3">
-          <div className="col-3 border-right">
-            <div className="d-flex mb-2">
-              <span>Channels</span>
-              <Button type="button" aria-label="add-modal" className="ml-auto" onClick={() => store.dispatch(actions.openEditChannelModal())}>+</Button>
-            </div>
-            <ul className="nav flex-column nav-pills nav-fill">
-              {channels.map(({ name, id, removable }) => (
-                <li key={id} className="nav-item d-flex">
-                  <Button type="button" className={getButtonClasses(id)} onClick={() => store.dispatch(actions.selectChannel(id))}>{name}</Button>
-                  {removable ? (
-                    <>
-                      <Button
-                        type="button"
-                        aria-label="edit-modal"
-                        className="mb-2 ml-2 btn-light"
-                        onClick={() => store.dispatch(actions.openEditChannelModal(id))}
-                      >
-                        <img src={pencilIcon} alt="Edit shannel" />
-                      </Button>
-                      <Button
-                        variant="secondary"
-                        aria-label="delete-modal"
-                        className="mb-2 ml-2 btn-light"
-                        onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}
-                      >
-                        <img src={trashIcon} alt="Delete shannel" />
-                      </Button>
-                    </>
-                  ) : ''}
-                </li>
-              ))}
-            </ul>
+  const getButtonClasses = (idChannel) => { // eslint-disable-line
+    // const { currentChannelId } = store.getState();
+    return cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
+      'btn-primary': idChannel === currentChannelId,
+      'btn-light': idChannel !== currentChannelId,
+    });
+  };
+
+  return (
+    <>
+      <div className="row h-100 pb-3">
+        <div className="col-3 border-right">
+          <div className="d-flex mb-2">
+            <span>{ t('channels-title')}</span>
+            <Button type="button" aria-label="add-modal" className="ml-auto" onClick={() => store.dispatch(actions.openEditChannelModal())}>+</Button>
           </div>
-          <Chat userName={userName} store={store} />
+          <ul className="nav flex-column nav-pills nav-fill">
+            {channels.map(({ name, id, removable }) => (
+              <li key={id} className="nav-item d-flex">
+                <Button type="button" className={getButtonClasses(id)} onClick={() => store.dispatch(actions.selectChannel(id))}>{name}</Button>
+                {removable ? (
+                  <>
+                    <Button
+                      type="button"
+                      aria-label="edit-modal"
+                      className="mb-2 ml-2 btn-light"
+                      onClick={() => store.dispatch(actions.openEditChannelModal(id))}
+                    >
+                      <img src={pencilIcon} alt="Edit shannel" />
+                    </Button>
+                    <Button
+                      variant="secondary"
+                      aria-label="delete-modal"
+                      className="mb-2 ml-2 btn-light"
+                      onClick={() => store.dispatch(actions.openDeleteChannelModal(id))}
+                    >
+                      <img src={trashIcon} alt="Delete shannel" />
+                    </Button>
+                  </>
+                ) : ''}
+              </li>
+            ))}
+          </ul>
         </div>
-        <Formik
-          enableReinitialize
-          initialValues={{
-            channelName: editChannelData ? editChannelData.name : '',
-            authorName: userName,
-          }}
-          initialStatus={{
-            success: true,
-          }}
-          onSubmit={submitEditModal(store.dispatch, editChannelId)}
-        >
-          {(form) => (
-            <Modal show={isEditChannel} onHide={() => closeEditChannelModal(store.dispatch, form)}>
-              <Modal.Header closeButton>
-                <Modal.Title>{isEditChannel ? 'Edit channel' : 'Add channel'}</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <div className="form-group">
-                    <Field name="channelName">
-                      {({ field }) => (
-                        <input
-                          type="text"
-                          aria-label="channel-name"
-                          disabled={form.isSubmitting}
-                          className={cn('mb-2', 'form-control', { 'is-invalid': !form.status.success })}
-                          {...field} // eslint-disable-line react/jsx-props-no-spreading
-                        />
-                      )}
-                    </Field>
-                    <div className="d-block invalid-feedback">
-                      {!form.status.success ? form.errors.submit : ''}
-                    </div>
-                    <div className="d-flex justify-content-end">
-                      <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
-                        Cancel
-                      </Button>
-                      <Button type="submit" aria-label="channel-submit" disabled={form.isSubmitting}>Submit</Button>
-                    </div>
+        <Chat userName={userName} store={store} />
+      </div>
+      <Formik
+        enableReinitialize
+        initialValues={{
+          channelName: editChannelData ? editChannelData.name : '',
+          authorName: userName,
+        }}
+        initialStatus={{
+          success: true,
+        }}
+        onSubmit={submitEditModal(store.dispatch, editChannelId)}
+      >
+        {(form) => (
+          <Modal show={isEditChannel} onHide={() => closeEditChannelModal(store.dispatch, form)}>
+            <Modal.Header closeButton>
+              <Modal.Title>{editChannelId ? t('edit channel') : t('add channel')}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <div className="form-group">
+                  <Field name="channelName">
+                    {({ field }) => (
+                      <input
+                        type="text"
+                        aria-label="channel-name"
+                        disabled={form.isSubmitting}
+                        className={cn('mb-2', 'form-control', { 'is-invalid': !form.status.success })}
+                        {...field} // eslint-disable-line react/jsx-props-no-spreading
+                      />
+                    )}
+                  </Field>
+                  <div className="d-block invalid-feedback">
+                    {!form.status.success ? t(form.errors.submit) : ''}
                   </div>
-                </Form>
-              </Modal.Body>
-            </Modal>
-          )}
-        </Formik>
-        <Formik
-          initialValues={{
-            channelId: deleteChannelId,
-            authorName: userName,
-          }}
-          initialStatus={{
-            success: true,
-          }}
-          onSubmit={deleteChannel(store.dispatch, deleteChannelId)}
-        >
-          {(form) => (
-            <Modal
-              show={isDeleteChannel}
-              onHide={() => closeDeleteChannelModal(store.dispatch, form)}
-            >
-              <Modal.Header closeButton>
-                <Modal.Title>Delete channel?</Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Form>
-                  <div className="form-group">
-                    <div className="d-flex justify-content-end">
-                      <Button variant="secondary" className="mr-2" onClick={() => closeDeleteChannelModal(store.dispatch, form)}>
-                        Cancel
-                      </Button>
-                      <Button type="submit" className="btn-danger" disabled={form.isSubmitting}>Delete</Button>
-                    </div>
+                  <div className="d-flex justify-content-end">
+                    <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" aria-label="channel-submit" disabled={form.isSubmitting}>{t('submit')}</Button>
                   </div>
-                </Form>
-              </Modal.Body>
-            </Modal>
-          )}
-        </Formik>
-      </>
-    );
-  }
+                </div>
+              </Form>
+            </Modal.Body>
+          </Modal>
+        )}
+      </Formik>
+      <Formik
+        initialValues={{
+          channelId: deleteChannelId,
+          authorName: userName,
+        }}
+        initialStatus={{
+          success: true,
+        }}
+        onSubmit={deleteChannel(store.dispatch, deleteChannelId)}
+      >
+        {(form) => (
+          <Modal
+            show={isDeleteChannel}
+            onHide={() => closeDeleteChannelModal(store.dispatch, form)}
+          >
+            <Modal.Header closeButton>
+              <Modal.Title>{`${t('remove channel')}?`}</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <Form>
+                <div className="form-group">
+                  <div className="d-flex justify-content-end">
+                    <Button variant="secondary" className="mr-2" onClick={() => closeDeleteChannelModal(store.dispatch, form)}>
+                      {t('cancel')}
+                    </Button>
+                    <Button type="submit" className="btn-danger" disabled={form.isSubmitting}>{t('delete')}</Button>
+                  </div>
+                </div>
+              </Form>
+            </Modal.Body>
+          </Modal>
+        )}
+      </Formik>
+    </>
+  );
 }
 App.contextType = AppContext;
 

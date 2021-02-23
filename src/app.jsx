@@ -14,6 +14,7 @@ import reducer, {
   removeChannel,
   selectDefaultChannel,
 } from './reducers';
+import './i18n';
 
 const init = (initData, websocket) => {
   const rollbar = new Rollbar({ // eslint-disable-line no-unused-vars
