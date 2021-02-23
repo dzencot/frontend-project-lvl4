@@ -1,0 +1,5 @@
+{
+  "moduleNameMapper": {
+    "assets/icons/(.*)": "<rootDir>/__mocks__/fileMock.js"
+  }
+}

@@ -34,7 +34,7 @@ beforeEach(async () => {
   document.body.innerHTML = initHtml;
 
   act(() => {
-    init({}, socket.socketClient);
+    init({ messages: [], channels: [] }, socket.socketClient);
   });
 
   elements.addChannel = screen.getByRole('button', { name: 'add-modal' });
