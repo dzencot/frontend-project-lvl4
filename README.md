@@ -1,4 +1,4 @@
-[![Node CI](https://github.com/dzencot/frontend-project-lvl4/workflows/Node%20CI/badge.svg)](https://github.com/dzencot/frontend-project-lvl4/workflows/Node%20CI/badge.svg)
+[![Node CI](https://github.com/dzencot/frontend-project-lvl4/workflows/Node%20CI/badge.svg)](https://github.com/dzencot/frontend-project-lvl4/actions?query=workflow%3A"Node+CI")
 
 # [Slack](https://agile-cliffs-38053.herokuapp.com/)
 
