@@ -55,10 +55,11 @@ const updateChannel = async (authorName, channelName, channelId) => {
 const submitEditModal = (dispatch, editChannelId) => async (values, form) => {
   const { authorName, channelName } = values;
   try {
-    const response = !editChannelId
-      ? await createChannel(authorName, channelName)
-      : await updateChannel(authorName, channelName, editChannelId);
-    console.log('response: ', response);
+    if (!editChannelId) {
+      await createChannel(authorName, channelName);
+    } else {
+      await updateChannel(authorName, channelName, editChannelId);
+    }
     form.resetForm({});
     form.setStatus({ success: true });
     dispatch(actions.closeEditChannelModal());
