@@ -23,6 +23,8 @@ function Chat(props) {
 
   const textInput = useRef(null);
 
+  const chatContainer = useRef(null);
+
   const formSchema = yup.object().shape({
     message: yup.string()
       .required('Required'),
@@ -31,6 +33,10 @@ function Chat(props) {
   useEffect(() => {
     textInput.current.focus();
   }, [currentChannelId]);
+
+  useEffect(() => {
+    chatContainer.current.scrollTop = chatContainer.current.scrollHeight;
+  }, [messages.length]);
 
   const onSubmit = async (values, form) => {
     const url = routes.channelMessagesPath(currentChannelId);
@@ -59,7 +65,7 @@ function Chat(props) {
   return (
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
-        <div id="messages-box" className="chat-messages overflow-auto mb-3 text-break">
+        <div id="messages-box" ref={chatContainer} className="chat-messages overflow-auto mb-3 text-break">
           {currentMessages.map((message) => (
             <div key={message.id}>
               <b>{message.authorName}</b>
