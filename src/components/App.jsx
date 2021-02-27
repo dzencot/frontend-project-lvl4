@@ -5,6 +5,7 @@ import { Button, Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 
 import Chat from './Chat';
 import AppContext from '../AppContext';
@@ -105,6 +106,11 @@ function App(props) {
 
   const editChannelData = channels.find(({ id }) => id === editChannelId);
 
+  const formSchema = yup.object().shape({
+    channelName: yup.string()
+      .required('Required'),
+  });
+
   const getButtonClasses = (idChannel) => { // eslint-disable-line
     // const { currentChannelId } = store.getState();
     return cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
@@ -160,6 +166,7 @@ function App(props) {
         initialStatus={{
           success: true,
         }}
+        validationSchema={formSchema}
         onSubmit={submitEditModal(store.dispatch, editChannelId)}
       >
         {(form) => (
@@ -204,6 +211,7 @@ function App(props) {
         initialStatus={{
           success: true,
         }}
+        validationSchema={formSchema}
         onSubmit={deleteChannel(store.dispatch, deleteChannelId)}
       >
         {(form) => (

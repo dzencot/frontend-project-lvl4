@@ -9,6 +9,7 @@ import {
 } from 'formik';
 import axios from 'axios';
 import { useTranslation } from 'react-i18next';
+import * as yup from 'yup';
 
 import routes from '../routes';
 
@@ -21,6 +22,11 @@ function Chat(props) {
   const { t } = useTranslation();
 
   const textInput = useRef(null);
+
+  const formSchema = yup.object().shape({
+    message: yup.string()
+      .required('Required'),
+  });
 
   useEffect(() => {
     textInput.current.focus();
@@ -72,6 +78,7 @@ function Chat(props) {
               success: true,
             }}
             onSubmit={onSubmit}
+            validationSchema={formSchema}
           >
             {(form) => (
               <Form>
