@@ -59,7 +59,7 @@ function Chat(props) {
   return (
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
-        <div id="messages-box" className="chat-messages overflow-auto mb-3">
+        <div id="messages-box" className="chat-messages overflow-auto mb-3 text-break">
           {currentMessages.map((message) => (
             <div key={message.id}>
               <b>{message.authorName}</b>

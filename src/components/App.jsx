@@ -6,6 +6,7 @@ import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
+import _ from 'lodash';
 
 import Chat from './Chat';
 import AppContext from '../AppContext';
@@ -108,6 +109,7 @@ function App(props) {
 
   const formSchema = yup.object().shape({
     channelName: yup.string()
+      .max(10, 'Too Long!')
       .required('Required'),
   });
 
@@ -127,7 +129,7 @@ function App(props) {
             <span>{ t('channels-title')}</span>
             <Button type="button" aria-label="add-modal" className="ml-auto" onClick={() => store.dispatch(actions.openEditChannelModal())}>+</Button>
           </div>
-          <ul className="nav flex-column nav-pills nav-fill">
+          <ul className="nav flex-column nav-pills nav-fill text-break">
             {channels.map(({ name, id, removable }) => (
               <li key={id} className="nav-item d-flex">
                 <Button type="button" className={getButtonClasses(id)} onClick={() => store.dispatch(actions.selectChannel(id))}>{name}</Button>
@@ -183,13 +185,13 @@ function App(props) {
                         type="text"
                         aria-label="channel-name"
                         disabled={form.isSubmitting}
-                        className={cn('mb-2', 'form-control', { 'is-invalid': !form.status.success })}
+                        className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
                         {...field} // eslint-disable-line react/jsx-props-no-spreading
                       />
                     )}
                   </Field>
                   <div className="d-block invalid-feedback">
-                    {!form.status.success ? t(form.errors.submit) : ''}
+                    {!_.isEmpty(form.errors) ? t(`errors.channelName.${form.errors.channelName}`) : ''}
                   </div>
                   <div className="d-flex justify-content-end">
                     <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => closeEditChannelModal(store.dispatch, form)}>
@@ -211,7 +213,6 @@ function App(props) {
         initialStatus={{
           success: true,
         }}
-        validationSchema={formSchema}
         onSubmit={deleteChannel(store.dispatch, deleteChannelId)}
       >
         {(form) => (

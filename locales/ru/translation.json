@@ -10,7 +10,11 @@
   "add channel": "Добавить канал",
   "remove channel": "Удалить канал",
   "errors": {
-    "Network Error": "Ошибка соединения"
+    "Network Error": "Ошибка соединения",
+    "channelName": {
+      "Required": "Имя канала не должно быть пустое",
+      "Too Long!": "Имя канала слишком длинное!"
+    }
   }
 }
 
