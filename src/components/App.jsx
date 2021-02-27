@@ -101,7 +101,7 @@ function App(props) {
     deleteChannelId,
     currentChannelId,
   } = props;
-  const { userName } = useContext(AppContext);
+  const { userName, defaultChannelId } = useContext(AppContext);
 
   const { t } = useTranslation();
 

@@ -12,11 +12,11 @@ import reducer, {
   addChannel,
   renameChannel,
   removeChannel,
-  selectDefaultChannel,
 } from './reducers';
-import './i18n';
+import i18nInit from './i18n';
 
-const init = (initData, websocket) => {
+const init = async (initData, websocket) => {
+  await i18nInit();
   const rollbar = new Rollbar({ // eslint-disable-line no-unused-vars
     accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,
@@ -27,13 +27,13 @@ const init = (initData, websocket) => {
     userName = getRandomUserName();
     saveCurrentUserName(userName);
   }
+  const defaultChannelId = 0;
 
   const container = document.getElementById('chat');
 
   const store = configureStore({
     preloadedState: {
       ...initData,
-      defaultChannelid: initData.currentChannelId,
     },
     reducer,
   });
@@ -62,13 +62,11 @@ const init = (initData, websocket) => {
   });
 
   ReactDOM.render(
-    <AppContext.Provider value={{ userName }}>
+    <AppContext.Provider value={{ userName, defaultChannelId }}>
       <App store={store} />
     </AppContext.Provider>,
     container,
   );
-
-  store.dispatch(selectDefaultChannel());
 };
 
 export default init;
