@@ -12,7 +12,8 @@
     "Network Error": "Network error",
     "channelName": {
       "Required": "Channel name is required",
-      "Too Long!": "Channel name is too long!"
+      "Too Long!": "Channel name is too long!",
+      "Already exist": "Channel name is already exist"
     }
   }
 }
