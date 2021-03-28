@@ -17,7 +17,7 @@ import init from '../src/app';
 const index = path.join(__dirname, '..', '__fixtures__', 'index.html');
 const initHtml = fs.readFileSync(index, 'utf-8');
 
-const elements = {};
+// const elements = {};
 
 const urlApi = 'http://localhost:5000/api/v1';
 let socket;

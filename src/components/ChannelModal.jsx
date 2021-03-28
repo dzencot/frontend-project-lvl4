@@ -66,7 +66,7 @@ const channelDataSelector = createSelector([
   currentChannelIdSelector,
   allChannelsSelector,
 ], (id, channels) => channels
-  .find((channel) => channel.id === id) || {});
+  .find((channel) => channel.id === id) || { name: '' });
 
 const existChannelNamesSelector = createSelector([
   channelDataSelector,
@@ -101,8 +101,7 @@ function ChannelModal() {
 
   const saveEdit = async (values, form) => {
     try {
-      const response = await currentModal.handler(channelId, values);
-      console.log(response);
+      await currentModal.handler(channelId, values);
       form.resetForm({});
       form.setStatus({ success: true });
       dispatch(closeModal());
@@ -115,8 +114,7 @@ function ChannelModal() {
 
   const deleteChannel = async (form) => {
     try {
-      const response = await currentModal.handler(channelId);
-      console.log(response);
+      await currentModal.handler(channelId);
       form.setStatus({ success: true });
       dispatch(removeChannel(channelId));
       dispatch(closeModal());
