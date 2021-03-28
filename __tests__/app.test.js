@@ -37,11 +37,12 @@ beforeEach(async () => {
     init({ messages: [], channels: [] }, socket.socketClient);
   });
 
-  elements.addChannel = screen.getByRole('button', { name: 'add-modal' });
-  elements.inputMessage = screen.getByRole('textbox', { name: 'message' });
-  elements.submitMessage = screen.getByRole('button', { name: 'message-submit' });
+  // elements.addChannel = screen.getByRole('button', { name: 'add-modal' });
+  // elements.inputMessage = screen.getByRole('textbox', { name: 'message' });
+  // elements.submitMessage = screen.getByRole('button', { name: 'message-submit' });
 });
 
 test('App init', () => {
   expect(screen.getByText(/Channels/i)).toBeInTheDocument();
+  // const addChannelButton = screen.getByRole('button', { name: 'add-modal' });
 });

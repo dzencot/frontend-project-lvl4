@@ -13,7 +13,6 @@ const channelsPanelSlice = createSlice({
   },
   reducers: {
     selectChannel: (state, action) => {
-      console.log('selected channel: ', state, action);
       state.currentChannelId = action.payload;
     },
     openModal: (state, { payload }) => {
@@ -34,10 +33,6 @@ const channelsPanelSlice = createSlice({
     },
     removeChannel: (state, action) => {
       state.channels = state.channels.filter(({ id }) => id !== action.payload);
-      // state.messages = state.messages.filter(({ idChannel }) => idChannel !== action.payload);
-      if (state.currentChannelId === action.payload) {
-        state.currentChannelId = state.defaultChannelid;
-      }
     },
   },
 });
