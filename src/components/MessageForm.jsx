@@ -50,6 +50,8 @@ function MessageForm(props) {
     textInput.current.focus();
   };
 
+  const isError = (form) => !form.status.success && form.errors.submit;
+
   return (
     <div className="mt-auto">
       <Formik
@@ -73,14 +75,14 @@ function MessageForm(props) {
                     type="text"
                     aria-label="message"
                     disabled={form.isSubmitting}
-                    className={cn('mr-2', 'form-control', { 'is-invalid': !form.status.success })}
+                    className={cn('mr-2', 'form-control', { 'is-invalid': isError(form) })}
                     {...field} // eslint-disable-line react/jsx-props-no-spreading
                   />
                 )}
               </Field>
               <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">{t('submit')}</button>
               <div className="d-block invalid-feedback">
-                {!form.status.success ? t(`errors.${form.errors.submit}`) : ''}
+                {isError(form) ? t(`errors.${form.errors.submit}`) : ''}
                 &nbsp;
               </div>
             </div>

@@ -6,6 +6,7 @@ import fs from 'fs';
 import path from 'path';
 import { screen } from '@testing-library/dom';
 // import userEvent from '@testing-library/user-event';
+// import { render, cleanup, waitForElement } from '@testing-library/react';
 import { act } from 'react-dom/test-utils';
 import nock from 'nock';
 import MockedSocket from 'socket.io-mock';
@@ -17,7 +18,6 @@ import init from '../src/app';
 const index = path.join(__dirname, '..', '__fixtures__', 'index.html');
 const initHtml = fs.readFileSync(index, 'utf-8');
 
-// const elements = {};
 
 const urlApi = 'http://localhost:5000/api/v1';
 let socket;
@@ -36,13 +36,8 @@ beforeEach(async () => {
   act(() => {
     init({ messages: [], channels: [] }, socket.socketClient);
   });
-
-  // elements.addChannel = screen.getByRole('button', { name: 'add-modal' });
-  // elements.inputMessage = screen.getByRole('textbox', { name: 'message' });
-  // elements.submitMessage = screen.getByRole('button', { name: 'message-submit' });
 });
 
 test('App init', () => {
   expect(screen.getByText(/Channels/i)).toBeInTheDocument();
-  // const addChannelButton = screen.getByRole('button', { name: 'add-modal' });
 });

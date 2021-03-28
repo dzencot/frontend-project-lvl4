@@ -42,7 +42,6 @@ const init = async (initData, websocket) => {
       channelsPanel: {
         channels: initData.channels,
         currentChannelId: defaultChannelId,
-        defaultChannelId,
       },
       channelChat: {
         messages: initData.messages,
