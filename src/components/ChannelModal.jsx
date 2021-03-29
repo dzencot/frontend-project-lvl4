@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import * as yup from 'yup';
 import { Button, Modal } from 'react-bootstrap';
 import { Formik, Form, Field } from 'formik';
@@ -29,6 +29,7 @@ const modalMapping = {
       const response = await axios.post(url, body);
       return response;
     },
+    inputEffect: (ref) => ref.current.focus(),
   },
   editChannel: {
     title: 'edit channel',
@@ -46,6 +47,7 @@ const modalMapping = {
       const response = await axios.patch(url, body);
       return response;
     },
+    inputEffect: (ref) => ref.current.select(),
   },
   deleteChannel: {
     title: 'remove channel',
@@ -53,6 +55,7 @@ const modalMapping = {
       const url = routes.channelPath(channelId);
       await axios.delete(url);
     },
+    inputEffect: () => {},
   },
 };
 
@@ -90,6 +93,8 @@ function ChannelModal() {
 
   const { t } = useTranslation();
 
+  const channelNameInput = useRef(null);
+
   const formSchema = yup.object().shape({
     channelName: yup.string()
       .trim()
@@ -98,7 +103,8 @@ function ChannelModal() {
       .notOneOf(existChannelNames, 'Already exist'),
   });
 
-  const currentModal = modalType ? modalMapping[modalType] : {};
+  const currentModal = modalType ? modalMapping[modalType] : null;
+  useEffect(() => currentModal?.inputEffect(channelNameInput), [modalType]);
 
   const saveEdit = async (values, form) => {
     try {
@@ -145,22 +151,20 @@ function ChannelModal() {
       {(form) => (
         <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
-            <Modal.Title>{t(currentModal.title)}</Modal.Title>
+            <Modal.Title>{t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
               <div className="form-group">
-                <Field name="channelName">
-                  {({ field }) => (
-                    <input
-                      type="text"
-                      aria-label="channel-name"
-                      disabled={form.isSubmitting}
-                      className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
-                      {...field} // eslint-disable-line react/jsx-props-no-spreading
-                    />
-                  )}
-                </Field>
+                <Field
+                  innerRef={channelNameInput}
+                  name="channelName"
+                  autoFocus
+                  type="text"
+                  aria-label="channel-name"
+                  disabled={form.isSubmitting}
+                  className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
+                />
                 <div className="d-block invalid-feedback">
                   {!_.isEmpty(form.errors) ? t(`errors.channelName.${form.errors.channelName}`) : ''}
                 </div>
@@ -188,7 +192,7 @@ function ChannelModal() {
       {(form) => (
         <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
-            <Modal.Title>{t(currentModal.title)}</Modal.Title>
+            <Modal.Title>{t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
