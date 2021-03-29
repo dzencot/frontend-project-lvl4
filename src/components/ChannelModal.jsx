@@ -92,6 +92,7 @@ function ChannelModal() {
 
   const formSchema = yup.object().shape({
     channelName: yup.string()
+      .trim()
       .max(15, 'Too Long!')
       .required('Required')
       .notOneOf(existChannelNames, 'Already exist'),

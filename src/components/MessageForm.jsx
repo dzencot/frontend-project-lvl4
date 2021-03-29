@@ -20,6 +20,7 @@ function MessageForm(props) {
 
   const formSchema = yup.object().shape({
     message: yup.string()
+      .trim()
       .required('Required'),
   });
 
