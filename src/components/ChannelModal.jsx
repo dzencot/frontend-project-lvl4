@@ -11,7 +11,7 @@ import cn from 'classnames';
 
 import AppContext from '../AppContext';
 import routes from '../routes';
-import { closeModal, removeChannel, selectChannel } from '../reducers/channelsPanel';
+import { closeModal, removeChannel, selectChannel } from '../reducers/channels';
 
 const modalMapping = {
   newChannel: {
@@ -61,9 +61,9 @@ const modalMapping = {
 
 const isOpen = (modalType) => modalMapping[modalType] ? true : false; // eslint-disable-line
 
-const currentChannelIdSelector = (store) => store.channelsPanel.modalChannelId;
+const currentChannelIdSelector = (store) => store.channels.modalChannelId;
 
-const allChannelsSelector = (store) => store.channelsPanel.channels;
+const allChannelsSelector = (store) => store.channels.list;
 
 const channelDataSelector = createSelector([
   currentChannelIdSelector,
@@ -79,13 +79,10 @@ const existChannelNamesSelector = createSelector([
   .map(({ name }) => name));
 
 function ChannelModal() {
-  const modalType = useSelector((store) => store.channelsPanel.modalType);
-  const channelId = useSelector((store) => store.channelsPanel.modalChannelId);
+  const modalType = useSelector((store) => store.channels.modalType);
+  const channelId = useSelector((store) => store.channels.modalChannelId);
   const channelData = useSelector(channelDataSelector);
   const existChannelNames = useSelector(existChannelNamesSelector);
-  const currentChannelId = useSelector((store) => store.channelsPanel.currentChannelId);
-
-  const { defaultChannelId } = useContext(AppContext);
 
   const dispatch = useDispatch();
 
@@ -108,10 +105,13 @@ function ChannelModal() {
 
   const saveEdit = async (values, form) => {
     try {
-      await currentModal.handler(channelId, values);
+      const response = await currentModal.handler(channelId, values);
       form.resetForm({});
       form.setStatus({ success: true });
       dispatch(closeModal());
+      if (modalType === 'newChannel') {
+        dispatch(selectChannel(response.data.data.attributes.id));
+      }
     } catch (error) {
       form.setStatus({ success: false });
       form.setSubmitting(false);
@@ -125,9 +125,6 @@ function ChannelModal() {
       form.setStatus({ success: true });
       dispatch(removeChannel(channelId));
       dispatch(closeModal());
-      if (channelId === currentChannelId) {
-        dispatch(selectChannel(defaultChannelId));
-      }
     } catch (error) {
       form.setStatus({ success: false });
       form.setSubmitting(false);

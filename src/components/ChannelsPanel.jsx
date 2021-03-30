@@ -6,7 +6,7 @@ import cn from 'classnames';
 
 import pencilIcon from '../../assets/icons/pencil.svg';
 import trashIcon from '../../assets/icons/trash.svg';
-import { openModal, selectChannel } from '../reducers/channelsPanel';
+import { openModal, selectChannel } from '../reducers/channels';
 
 function ChannelsPanel(props) {
   const {

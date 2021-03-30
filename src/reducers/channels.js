@@ -1,7 +1,9 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
 
-const channelsPanelSlice = createSlice({
+const DEFAULT_CHANNEL_ID = 1;
+
+const channelsSlice = createSlice({
   name: 'channelsPanel',
   initialState: {
     currentChannelId: null,
@@ -25,19 +27,22 @@ const channelsPanelSlice = createSlice({
       state.modalChannelId = null;
     },
     addChannel: (state, action) => {
-      state.channels.push(action.payload);
+      state.list.push(action.payload);
     },
     renameChannel: (state, action) => {
-      const currentChannel = state.channels.find(({ id }) => id === action.payload.id);
+      const currentChannel = state.list.find(({ id }) => id === action.payload.id);
       currentChannel.name = action.payload.name;
     },
     removeChannel: (state, action) => {
-      state.channels = state.channels.filter(({ id }) => id !== action.payload);
+      state.list = state.list.filter(({ id }) => id !== action.payload);
+      if (state.currentChannelId === action.payload) {
+        state.currentChannelId = DEFAULT_CHANNEL_ID;
+      }
     },
   },
 });
 
-const { actions, reducer } = channelsPanelSlice;
+const { actions, reducer } = channelsSlice;
 
 export const {
   selectChannel,

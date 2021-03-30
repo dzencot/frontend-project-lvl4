@@ -2,7 +2,7 @@
   "name": "frontend_l4_chat_project",
   "version": "0.0.1",
   "description": "",
-  "main": "dist/index.js",
+  "main": "src/app.jsx",
   "bin": {
     "slack": "dist/bin/slack.js"
   },

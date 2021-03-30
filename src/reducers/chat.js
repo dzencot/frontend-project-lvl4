@@ -1,8 +1,8 @@
 /* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit';
-import { removeChannel } from './channelsPanel';
+import { removeChannel } from './channels';
 
-const channelChatSlice = createSlice({
+const chatSlice = createSlice({
   name: 'channelChat',
   initialState: {
     messages: [],
@@ -19,7 +19,7 @@ const channelChatSlice = createSlice({
   },
 });
 
-const { actions, reducer } = channelChatSlice;
+const { actions, reducer } = chatSlice;
 
 export const {
   addMessage,

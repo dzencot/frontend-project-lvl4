@@ -9,15 +9,15 @@ import { getCurrentUserName, getRandomUserName, saveCurrentUserName } from './ut
 import AppContext from './AppContext';
 import App from './components/App';
 
-import channelsPanel, {
+import channels, {
   addChannel,
   renameChannel,
   removeChannel,
-} from './reducers/channelsPanel';
+} from './reducers/channels';
 
-import channelChat, {
+import chat, {
   addMessage,
-} from './reducers/channelChat';
+} from './reducers/chat';
 
 import i18nInit from './i18n';
 
@@ -39,17 +39,17 @@ const init = async (initData, websocket) => {
 
   const store = configureStore({
     preloadedState: {
-      channelsPanel: {
-        channels: initData.channels,
+      channels: {
+        list: initData.channels,
         currentChannelId: defaultChannelId,
       },
-      channelChat: {
+      chat: {
         messages: initData.messages,
       },
     },
     reducer: {
-      channelsPanel,
-      channelChat,
+      channels,
+      chat,
     },
   });
 

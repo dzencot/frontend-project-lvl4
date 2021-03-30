@@ -8,10 +8,10 @@ import ChannelChat from './ChannelChat';
 import ChannelModal from './ChannelModal';
 
 function App() {
-  const channels = useSelector((store) => store.channelsPanel.channels);
-  const currentChannelId = useSelector((store) => store.channelsPanel.currentChannelId);
+  const channels = useSelector((store) => store.channels.list);
+  const currentChannelId = useSelector((store) => store.channels.currentChannelId);
   const messages = useSelector((store) => {
-    const filteredMeessages = store.channelChat.messages
+    const filteredMeessages = store.chat.messages
       .filter(({ channelId }) => channelId === currentChannelId);
     return filteredMeessages;
   });
