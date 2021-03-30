@@ -23,17 +23,18 @@ import i18nInit from './i18n';
 
 const init = async (initData, websocket) => {
   await i18nInit();
+
   const rollbar = new Rollbar({ // eslint-disable-line no-unused-vars
     accessToken: process.env.ROLLBAR_TOKEN,
     captureUncaught: true,
     captureUnhandledRejections: true,
   });
+
   let userName = getCurrentUserName();
   if (!userName) {
     userName = getRandomUserName();
     saveCurrentUserName(userName);
   }
-  const defaultChannelId = 1;
 
   const container = document.getElementById('chat');
 
@@ -41,7 +42,6 @@ const init = async (initData, websocket) => {
     preloadedState: {
       channels: {
         list: initData.channels,
-        currentChannelId: defaultChannelId,
       },
       chat: {
         messages: initData.messages,
@@ -78,7 +78,7 @@ const init = async (initData, websocket) => {
 
   ReactDOM.render(
     <Provider store={store}>
-      <AppContext.Provider value={{ userName, defaultChannelId }}>
+      <AppContext.Provider value={{ userName }}>
         <App />
       </AppContext.Provider>
     </Provider>,

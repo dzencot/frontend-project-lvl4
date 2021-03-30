@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useContext } from 'react';
 import {
   Formik,
   Form,
@@ -10,11 +10,12 @@ import * as yup from 'yup';
 import axios from 'axios';
 
 import routes from '../routes';
+import AppContext from '../AppContext';
 
 function MessageForm(props) {
   const { userName, currentChannelId } = props;
 
-  const { t } = useTranslation();
+  const { i18n } = useTranslation(['ru', 'en'], { i18n: useContext(AppContext).i18n });
 
   const textInput = useRef(null);
 
@@ -81,9 +82,9 @@ function MessageForm(props) {
                   />
                 )}
               </Field>
-              <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">{t('submit')}</button>
+              <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">{i18n.t('submit')}</button>
               <div className="d-block invalid-feedback">
-                {isError(form) ? t(`errors.${form.errors.submit}`) : ''}
+                {isError(form) ? i18n.t(`errors.${form.errors.submit}`) : ''}
                 &nbsp;
               </div>
             </div>

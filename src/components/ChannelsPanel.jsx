@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import cn from 'classnames';
 
 import pencilIcon from '../../assets/icons/pencil.svg';
 import trashIcon from '../../assets/icons/trash.svg';
+import AppContext from '../AppContext';
 import { openModal, selectChannel } from '../reducers/channels';
 
 function ChannelsPanel(props) {
@@ -16,7 +17,7 @@ function ChannelsPanel(props) {
 
   const dispatch = useDispatch();
 
-  const { t } = useTranslation();
+  const { i18n } = useTranslation(['ru', 'en'], useContext(AppContext).i18n);
 
   const getButtonClasses = (idChannel) => cn('btn', 'nav-link', 'btn-block', 'mb-2', 'text-left', {
     'btn-primary': idChannel === currentChannelId,
@@ -28,7 +29,7 @@ function ChannelsPanel(props) {
   return (
     <div className="col-3 border-right">
       <div className="d-flex mb-2">
-        <span>{ t('channels-title')}</span>
+        <span>{i18n.t('channels-title')}</span>
         <Button type="button" aria-label="add-modal" className="ml-auto" onClick={() => showModal('newChannel')}>+</Button>
       </div>
       <ul className="nav flex-column nav-pills nav-fill text-break">

@@ -88,7 +88,7 @@ function ChannelModal() {
 
   const userName = 'user';
 
-  const { t } = useTranslation();
+  const { i18n } = useTranslation(['ru', 'en'], { i18n: useContext(AppContext).i18n });
 
   const channelNameInput = useRef(null);
 
@@ -148,7 +148,7 @@ function ChannelModal() {
       {(form) => (
         <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
-            <Modal.Title>{t(currentModal?.title)}</Modal.Title>
+            <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
@@ -163,13 +163,13 @@ function ChannelModal() {
                   className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
                 />
                 <div className="d-block invalid-feedback">
-                  {!_.isEmpty(form.errors) ? t(`errors.channelName.${form.errors.channelName}`) : ''}
+                  {!_.isEmpty(form.errors) ? i18n.t(`errors.channelName.${form.errors.channelName}`) : ''}
                 </div>
                 <div className="d-flex justify-content-end">
                   <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => dispatch(closeModal())}>
-                    {t('cancel')}
+                    {i18n.t('cancel')}
                   </Button>
-                  <Button type="submit" aria-label="channel-submit" disabled={form.isSubmitting}>{t('submit')}</Button>
+                  <Button type="submit" aria-label="channel-submit" disabled={form.isSubmitting}>{i18n.t('submit')}</Button>
                 </div>
               </div>
             </Form>
@@ -189,16 +189,16 @@ function ChannelModal() {
       {(form) => (
         <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
-            <Modal.Title>{t(currentModal?.title)}</Modal.Title>
+            <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form>
               <div className="form-group">
                 <div className="d-flex justify-content-end">
                   <Button variant="secondary" className="mr-2" onClick={() => dispatch(closeModal())}>
-                    {t('cancel')}
+                    {i18n.t('cancel')}
                   </Button>
-                  <Button className="btn-danger" disabled={form.isSubmitting} onClick={() => deleteChannel(form)}>{t('delete')}</Button>
+                  <Button className="btn-danger" disabled={form.isSubmitting} onClick={() => deleteChannel(form)}>{i18n.t('delete')}</Button>
                 </div>
               </div>
             </Form>
