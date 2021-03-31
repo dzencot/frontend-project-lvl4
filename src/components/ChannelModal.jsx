@@ -132,6 +132,16 @@ function ChannelModal() {
     }
   };
 
+  const getErrorMessage = (error) => {
+    if (!_.isEmpty(error.submit)) {
+      return i18n.t(`errors.submit.${error.submit}`);
+    }
+    if (!_.isEmpty(error.channelName)) {
+      return i18n.t(`errors.channelName.${error.channelName}`);
+    }
+    return '';
+  };
+
   const renderEditForm = () => (
     <Formik
       enableReinitialize
@@ -163,7 +173,7 @@ function ChannelModal() {
                   className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
                 />
                 <div className="d-block invalid-feedback">
-                  {!_.isEmpty(form.errors) && i18n.t(`errors.channelName.${form.errors.channelName}`)}
+                  {!_.isEmpty(form.errors) && getErrorMessage(form.errors)}
                 </div>
                 <div className="d-flex justify-content-end">
                   <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => dispatch(closeModal())}>
@@ -194,6 +204,9 @@ function ChannelModal() {
           <Modal.Body>
             <Form>
               <div className="form-group">
+                <div className="d-block invalid-feedback">
+                  {!_.isEmpty(form.errors) && getErrorMessage(form.errors)}
+                </div>
                 <div className="d-flex justify-content-end">
                   <Button variant="secondary" className="mr-2" onClick={() => dispatch(closeModal())}>
                     {i18n.t('cancel')}

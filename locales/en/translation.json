@@ -9,7 +9,12 @@
   "edit channel": "Edit channel",
   "add channel": "Add channel",
   "errors": {
-    "Network Error": "Network error",
+    "message": {
+      "Required": "Message is required"
+    },
+    "submit": {
+      "Network Error": "Network error"
+    },
     "channelName": {
       "Required": "Channel name is required",
       "Too Long!": "Channel name is too long!",

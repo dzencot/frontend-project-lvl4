@@ -9,6 +9,7 @@ import cn from 'classnames';
 import { useTranslation } from 'react-i18next';
 import * as yup from 'yup';
 import axios from 'axios';
+import _ from 'lodash';
 
 import routes from '../routes';
 import AppContext from '../AppContext';
@@ -54,7 +55,16 @@ function MessageForm() {
     textInput.current.focus();
   };
 
-  const isError = (form) => !form.status.success && form.errors.submit;
+  const isError = (form) => !_.isEmpty(form.touched) && !_.isEmpty(form.errors);
+  const getErrorMessage = (error) => {
+    if (!_.isEmpty(error.submit)) {
+      return i18n.t(`errors.submit.${error.submit}`);
+    }
+    if (!_.isEmpty(error.message)) {
+      return i18n.t(`errors.message.${error.message}`);
+    }
+    return '';
+  };
 
   return (
     <div className="mt-auto">
@@ -64,7 +74,7 @@ function MessageForm() {
           authorName: userName,
         }}
         initialStatus={{
-          success: true,
+          success: false,
         }}
         onSubmit={onSubmit}
         validationSchema={formSchema}
@@ -86,7 +96,7 @@ function MessageForm() {
               </Field>
               <button type="submit" aria-label="message-submit" disabled={form.isSubmitting} className="btn btn-primary">{i18n.t('submit')}</button>
               <div className="d-block invalid-feedback">
-                {isError(form) ? i18n.t(`errors.${form.errors.submit}`) : ''}
+                {isError(form) && getErrorMessage(form.errors)}
                 &nbsp;
               </div>
             </div>
