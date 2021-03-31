@@ -60,9 +60,8 @@ const modalMapping = {
   },
 };
 
-const isOpen = (modalType) => modalMapping[modalType] ? true : false; // eslint-disable-line
 
-const currentChannelIdSelector = (store) => store.channels.modalChannelId;
+const currentChannelIdSelector = (store) => store.modal.modalChannelId;
 
 const allChannelsSelector = (store) => store.channels.list;
 
@@ -70,13 +69,13 @@ const channelDataSelector = createSelector([
   currentChannelIdSelector,
   allChannelsSelector,
 ], (id, channels) => channels
-  .find((channel) => channel.id === id) || { name: '' });
+  .find((channel) => channel.id === id));
 
 const existChannelNamesSelector = createSelector([
   channelDataSelector,
   allChannelsSelector,
 ], (channelData, channels) => channels
-  .filter((channel) => channel.id !== channelData.id)
+  .filter((channel) => channel.id !== channelData?.id)
   .map(({ name }) => name));
 
 function ChannelModal() {
@@ -84,12 +83,13 @@ function ChannelModal() {
   const channelId = useSelector((store) => store.modal.modalChannelId);
   const channelData = useSelector(channelDataSelector);
   const existChannelNames = useSelector(existChannelNamesSelector);
+  const isOpen = useSelector((state) => state.modal.isOpen);
 
   const dispatch = useDispatch();
 
-  const userName = 'user';
+  const { userName, i18n: i18nextInstance } = useContext(AppContext);
 
-  const { i18n } = useTranslation(['ru', 'en'], { i18n: useContext(AppContext).i18n });
+  const { i18n } = useTranslation(['ru', 'en'], { i18n: i18nextInstance });
 
   const channelNameInput = useRef(null);
 
@@ -137,7 +137,7 @@ function ChannelModal() {
     <Formik
       enableReinitialize
       initialValues={{
-        channelName: channelData.name,
+        channelName: channelData?.name ?? '',
         authorName: userName,
       }}
       initialStatus={{
@@ -147,7 +147,7 @@ function ChannelModal() {
       onSubmit={saveEdit}
     >
       {(form) => (
-        <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
+        <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
             <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
@@ -164,7 +164,7 @@ function ChannelModal() {
                   className={cn('mb-2', 'form-control', { 'is-invalid': !_.isEmpty(form.errors) })}
                 />
                 <div className="d-block invalid-feedback">
-                  {!_.isEmpty(form.errors) ? i18n.t(`errors.channelName.${form.errors.channelName}`) : ''}
+                  {!_.isEmpty(form.errors) && i18n.t(`errors.channelName.${form.errors.channelName}`)}
                 </div>
                 <div className="d-flex justify-content-end">
                   <Button aria-label="cancel" variant="secondary" className="mr-2" onClick={() => dispatch(closeModal())}>
@@ -188,7 +188,7 @@ function ChannelModal() {
       }}
     >
       {(form) => (
-        <Modal show={isOpen(modalType)} onHide={() => dispatch(closeModal())}>
+        <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
             <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>

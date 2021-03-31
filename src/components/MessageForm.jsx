@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useContext } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Formik,
   Form,
@@ -12,10 +13,11 @@ import axios from 'axios';
 import routes from '../routes';
 import AppContext from '../AppContext';
 
-function MessageForm(props) {
-  const { userName, currentChannelId } = props;
+function MessageForm() {
+  const { userName, i18n: i18nextInstance } = useContext(AppContext);
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
 
-  const { i18n } = useTranslation(['ru', 'en'], { i18n: useContext(AppContext).i18n });
+  const { i18n } = useTranslation(['ru', 'en'], { i18n: i18nextInstance });
 
   const textInput = useRef(null);
 

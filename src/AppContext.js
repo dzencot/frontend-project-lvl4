@@ -2,7 +2,7 @@ import React from 'react';
 
 const AppContext = React.createContext({
   userName: null,
-  defaultChannelId: 0,
+  defaultChannelId: 1,
   i18n: null,
 });
 

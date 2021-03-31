@@ -1,7 +1,7 @@
-import React, { useContext, useSelector, createSelector } from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import cn from 'classnames';
 
 import pencilIcon from '../../assets/icons/pencil.svg';
@@ -10,14 +10,10 @@ import AppContext from '../AppContext';
 import { selectChannel } from '../reducers/channels';
 import { openModal } from '../reducers/modal';
 
-function ChannelsPanel(props) {
-  const {
-    currentChannelId,
-    channels,
-  } = props;
-  // const currentChannelId = useSelector(createSelector((state) => state.channels.currentChannelId));
+function ChannelsPanel() {
+  const currentChannelId = useSelector((state) => state.channels.currentChannelId);
   // const currentChannelId = '';
-  // const channels = useSelector((state) => state.channels.list);
+  const channels = useSelector((state) => state.channels.list);
 
   const dispatch = useDispatch();
 

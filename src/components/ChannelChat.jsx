@@ -1,12 +1,17 @@
-import React, { useEffect, useRef } from 'react';
-import { connect } from 'react-redux';
+import React, {
+  useEffect,
+  useRef,
+} from 'react';
+import { useSelector } from 'react-redux';
 import MessageForm from './MessageForm.jsx';
 
-const mapStateToProps = (state) => state;
-
-function ChannelChat(props) {
-  const { messages, userName, currentChannelId } = props;
-  const currentMessages = messages.filter(({ channelId }) => channelId === currentChannelId);
+function ChannelChat() {
+  const currentChannelId = useSelector((store) => store.channels.currentChannelId);
+  const messages = useSelector((store) => {
+    const filteredMeessages = store.chat.messages
+      .filter(({ channelId }) => channelId === currentChannelId);
+    return filteredMeessages;
+  });
 
   const chatContainer = useRef(null);
 
@@ -18,7 +23,7 @@ function ChannelChat(props) {
     <div className="col h-100">
       <div className="d-flex flex-column h-100">
         <div id="messages-box" ref={chatContainer} className="chat-messages overflow-auto mb-3 text-break">
-          {currentMessages.map((message) => (
+          {messages.map((message) => (
             <div key={message.id}>
               <b>{message.authorName}</b>
               :
@@ -26,10 +31,10 @@ function ChannelChat(props) {
             </div>
           ))}
         </div>
-        <MessageForm userName={userName} currentChannelId={currentChannelId} />
+        <MessageForm />
       </div>
     </div>
   );
 }
 
-export default connect(mapStateToProps)(ChannelChat);
+export default ChannelChat;
