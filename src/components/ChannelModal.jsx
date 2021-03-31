@@ -30,7 +30,7 @@ const modalMapping = {
       const response = await axios.post(url, body);
       return response;
     },
-    inputEffect: (ref) => ref.current.focus(),
+    inputEffect: (ref) => ref?.current?.focus(),
   },
   editChannel: {
     title: 'edit channel',
@@ -48,7 +48,7 @@ const modalMapping = {
       const response = await axios.patch(url, body);
       return response;
     },
-    inputEffect: (ref) => ref.current.select(),
+    inputEffect: (ref) => ref?.current?.select(),
   },
   deleteChannel: {
     title: 'remove channel',
@@ -83,7 +83,6 @@ function ChannelModal() {
   const channelId = useSelector((store) => store.modal.modalChannelId);
   const channelData = useSelector(channelDataSelector);
   const existChannelNames = useSelector(existChannelNamesSelector);
-  const isOpen = useSelector((state) => state.modal.isOpen);
 
   const dispatch = useDispatch();
 
@@ -147,7 +146,7 @@ function ChannelModal() {
       onSubmit={saveEdit}
     >
       {(form) => (
-        <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
+        <Modal show onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
             <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
@@ -188,7 +187,7 @@ function ChannelModal() {
       }}
     >
       {(form) => (
-        <Modal show={isOpen} onHide={() => dispatch(closeModal())}>
+        <Modal show onHide={() => dispatch(closeModal())}>
           <Modal.Header closeButton>
             <Modal.Title>{i18n.t(currentModal?.title)}</Modal.Title>
           </Modal.Header>
@@ -215,11 +214,7 @@ function ChannelModal() {
     deleteChannel: renderDeleteForm,
   };
 
-  return (
-    <>
-      {modalRenderMapping[modalType] && modalRenderMapping[modalType]()}
-    </>
-  );
+  return modalRenderMapping[modalType]();
 }
 
 export default ChannelModal;
