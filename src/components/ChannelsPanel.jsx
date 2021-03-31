@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useSelector, createSelector } from 'react';
 import { Button } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { useDispatch } from 'react-redux';
@@ -14,6 +14,9 @@ function ChannelsPanel(props) {
     currentChannelId,
     channels,
   } = props;
+  // const currentChannelId = useSelector(createSelector((state) => state.channels.currentChannelId));
+  // const currentChannelId = '';
+  // const channels = useSelector((state) => state.channels.list);
 
   const dispatch = useDispatch();
 

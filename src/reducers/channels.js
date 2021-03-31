@@ -6,8 +6,7 @@ const DEFAULT_CHANNEL_ID = 1;
 const channelsSlice = createSlice({
   name: 'channelsPanel',
   initialState: {
-    currentChannelId: null,
-    defaultChannelId: null,
+    currentChannelId: DEFAULT_CHANNEL_ID,
     channels: [],
     modalType: null,
     modalChannelId: null,

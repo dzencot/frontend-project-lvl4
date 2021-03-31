@@ -8,8 +8,8 @@ import ChannelChat from './ChannelChat';
 import ChannelModal from './ChannelModal';
 
 function App() {
-  const channels = useSelector((store) => store.channels.list);
   const currentChannelId = useSelector((store) => store.channels.currentChannelId);
+  const channels = useSelector((store) => store.channels.list);
   const messages = useSelector((store) => {
     const filteredMeessages = store.chat.messages
       .filter(({ channelId }) => channelId === currentChannelId);

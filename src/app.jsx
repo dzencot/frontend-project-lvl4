@@ -41,6 +41,7 @@ const init = async (initData, websocket) => {
   const store = configureStore({
     preloadedState: {
       channels: {
+        currentChannelId: 1,
         list: initData.channels,
       },
       chat: {
