@@ -7,7 +7,8 @@ import cn from 'classnames';
 import pencilIcon from '../../assets/icons/pencil.svg';
 import trashIcon from '../../assets/icons/trash.svg';
 import AppContext from '../AppContext';
-import { openModal, selectChannel } from '../reducers/channels';
+import { selectChannel } from '../reducers/channels';
+import { openModal } from '../reducers/modal';
 
 function ChannelsPanel(props) {
   const {

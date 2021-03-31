@@ -11,7 +11,8 @@ import cn from 'classnames';
 
 import AppContext from '../AppContext';
 import routes from '../routes';
-import { closeModal, removeChannel, selectChannel } from '../reducers/channels';
+import { removeChannel, selectChannel } from '../reducers/channels';
+import { closeModal } from '../reducers/modal';
 
 const modalMapping = {
   newChannel: {
@@ -79,8 +80,8 @@ const existChannelNamesSelector = createSelector([
   .map(({ name }) => name));
 
 function ChannelModal() {
-  const modalType = useSelector((store) => store.channels.modalType);
-  const channelId = useSelector((store) => store.channels.modalChannelId);
+  const modalType = useSelector((store) => store.modal.modalType);
+  const channelId = useSelector((store) => store.modal.modalChannelId);
   const channelData = useSelector(channelDataSelector);
   const existChannelNames = useSelector(existChannelNamesSelector);
 

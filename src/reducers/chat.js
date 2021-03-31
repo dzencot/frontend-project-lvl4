@@ -3,7 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { removeChannel } from './channels';
 
 const chatSlice = createSlice({
-  name: 'channelChat',
+  name: 'chat',
   initialState: {
     messages: [],
   },

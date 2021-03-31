@@ -4,26 +4,14 @@ import { createSlice } from '@reduxjs/toolkit';
 const DEFAULT_CHANNEL_ID = 1;
 
 const channelsSlice = createSlice({
-  name: 'channelsPanel',
+  name: 'channels',
   initialState: {
     currentChannelId: DEFAULT_CHANNEL_ID,
     channels: [],
-    modalType: null,
-    modalChannelId: null,
-    modalNewChannelName: null,
   },
   reducers: {
     selectChannel: (state, action) => {
       state.currentChannelId = action.payload;
-    },
-    openModal: (state, { payload }) => {
-      const { modalType, channelId } = payload;
-      state.modalType = modalType;
-      state.modalChannelId = channelId;
-    },
-    closeModal: (state) => {
-      state.modalType = null;
-      state.modalChannelId = null;
     },
     addChannel: (state, action) => {
       state.list.push(action.payload);

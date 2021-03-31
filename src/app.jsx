@@ -19,6 +19,8 @@ import chat, {
   addMessage,
 } from './reducers/chat';
 
+import modal from './reducers/modal';
+
 import i18nInit from './i18n';
 
 const init = async (initData, websocket) => {
@@ -51,6 +53,7 @@ const init = async (initData, websocket) => {
     reducer: {
       channels,
       chat,
+      modal,
     },
   });
 
