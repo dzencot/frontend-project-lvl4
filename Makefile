@@ -3,3 +3,6 @@ start-frontend:
 
 start-backned:
 	echo "start backend"
+
+install:
+	make -C frontend install
