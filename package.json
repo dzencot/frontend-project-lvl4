@@ -1,19 +1,24 @@
 {
   "name": "@hexlet/code",
-  "version": "1.0.0",
-  "description": "[![Actions Status](https://github.com/dzencot/frontend-project-lvl4/workflows/hexlet-check/badge.svg)](https://github.com/dzencot/frontend-project-lvl4/actions)",
+  "version": "0.0.1",
+  "description": "Create light version of Slack",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npm run build --prefix frontend",
+    "start": "start-server -s ./frontend/build",
+    "postinstall": "cd frontend && npm ci"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/dzencot/frontend-project-lvl4.git"
+    "url": "git+https://github.com/Sverxsro4nik/frontend-project-lvl4.git"
   },
-  "author": "",
+  "author": "Sverxsro4nik@gmail.com",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/dzencot/frontend-project-lvl4/issues"
+    "url": "https://github.com/Sverxsro4nik/frontend-project-lvl4/issues"
   },
-  "homepage": "https://github.com/dzencot/frontend-project-lvl4#readme"
+  "homepage": "https://github.com/Sverxsro4nik/frontend-project-lvl4#readme",
+  "dependencies": {
+    "@hexlet/chat-server": "^1.1.6"
+  }
 }

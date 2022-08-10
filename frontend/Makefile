@@ -1,5 +1,12 @@
+install:
+	npm ci
+
+start-frontend:
+	npm run start
+
 start:
 	npm start
 
-install:
-	npm ci
+build: 
+	npm build
+
